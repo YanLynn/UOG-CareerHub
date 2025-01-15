@@ -14,7 +14,7 @@
         @vite(['resources/js/app.js', 'resources/css/app.css'])
     </head>
 
-    <body>
+    <body class="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-300">
         <div id="app">
             <App />
         </div>

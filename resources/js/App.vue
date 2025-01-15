@@ -1,20 +1,14 @@
+
 <template>
     <div>
-        <Navbar />
-        <router-view />
+        <MainLayout />
     </div>
 </template>
 
-<script>
-import Navbar from './components/Navbar.vue';
-
-export default {
-    components: {
-        Navbar,
-    },
-};
+<script setup>
+import MainLayout from '../js/views/layout/MainLayout.vue';
 </script>
 
 <style>
-/* Add any global styles if needed */
+@import 'tailwindcss/tailwind.css';
 </style>
