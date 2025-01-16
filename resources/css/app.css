@@ -3,3 +3,12 @@
 @tailwind utilities;
 
 
+#nprogress .bar {
+    background: #2563eb; /* Blue-600 */
+    height: 4px;
+  }
+
+  /* Optional: Hide the spinner */
+  #nprogress .spinner {
+    display: none;
+  }

@@ -1,22 +1,27 @@
 <template>
     <div class="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
-            <h2 class="text-2xl font-bold  text-center text-gray-800 dark:text-gray-100">Welcome Back 👋</h2>
+            <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-gray-100">Welcome Back 👋</h2>
             <form @submit.prevent="handleLogin" class="space-y-5">
                 <!-- Email Input -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                     <input v-model="email" type="email" id="email" placeholder="Enter your email"
                         class="w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none focus:ring-2"
                         required />
+                    <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
                 </div>
 
                 <!-- Password Input -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <label for="password"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                     <input v-model="password" type="password" id="password" placeholder="Enter your password"
                         class="w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none focus:ring-2"
                         required />
+                    <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
+                    <p v-if="errors" class="text-red-500 text-xs mt-1">{{ errors.general }}</p>
                 </div>
 
                 <!-- Login Button -->
@@ -43,13 +48,13 @@
                 </button>
 
                 <!-- Forgot Password -->
-                <p class="text-center text-sm text-gray-600">
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">
                     Forgot your password?
                     <a href="#" class="text-blue-600 hover:underline">Reset it</a>
                 </p>
 
                 <!-- Sign Up Link -->
-                <p class="text-center text-sm text-gray-600">
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">
                     Don't have an account?
                     <a href="#" class="text-blue-600 hover:underline">Sign up</a>
                 </p>
@@ -62,20 +67,32 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../store';
+import { useToastStore } from '../../store/toastStore';
 
 const email = ref('');
 const password = ref('');
+const errors = ref({});
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToastStore();
 
 const handleLogin = async () => {
-    try {
-        await authStore.login({ email: email.value, password: password.value });
-        console.log('Navigating to Home...');
-        router.push({ name: 'Home' });
-    } catch (error) {
-        console.error('Login failed:', error);
-        alert('Login failed');
+  errors.value = {};
+
+  try {
+    await authStore.login({ email: email.value, password: password.value });
+    toast.showToast('Login successful! Welcome back 👋', 'success');
+    router.push({ name: 'Home' });
+  } catch (error) {
+    console.error('Login failed:', error);
+
+    if (error.response && error.response.status === 422) {
+      errors.value = error.response.data.errors;
+    } else if (error.response && error.response.status === 401) {
+      errors.value.general = 'Invalid email or password.';
+    } else {
+      errors.value.general = 'An unexpected error occurred.';
     }
+  }
 };
 </script>
