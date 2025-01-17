@@ -10,10 +10,10 @@
 </div>
 
           <ul class="flex items-center justify-center flex-wrap gap-y-2 md:justify-end space-x-6 ">
-            <li><a href="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Home</a></li>
-            <li><a href="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">About</a></li>
-            <li><a href="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Services</a></li>
-            <li><a href="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Contact</a></li>
+            <li><router-link to="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Home</router-link></li>
+            <li><router-link to="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">About</router-link></li>
+            <li><router-link to="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Services</router-link></li>
+            <li><router-link to="javascript:void(0)" class="text-gray-800 dark:text-gray-100 hover:underline text-base">Contact</router-link></li>
           </ul>
         </div>
 

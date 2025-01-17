@@ -1,5 +1,5 @@
 <template>
-    <div class="font-[sans-serif] flex items-center justify-center min-h-screen p-4 ">
+    <div class="flex items-center justify-center min-h-screen p-4 ">
         <div
             class="shadow-lg max-w-6xl w-full rounded-md flex flex-col md:flex-row dark:bg-gray-800 bg-gray-100">
             <!-- Left Side Image -->
