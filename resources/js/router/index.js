@@ -3,10 +3,12 @@ import Home from '../views/Home.vue';
 import Login from '../views/auth/Login.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import Register from '../views/auth/Register.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
+    { path: '/register', name: 'Register', component: Register },
     // {
     //     path: '/dashboard',
     //     name: 'Dashboard',
