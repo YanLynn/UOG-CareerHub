@@ -7,7 +7,7 @@
                     <router-link to="/">
                         <h1
                         class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-blue-600 dark:text-blue-400">
-                        Oversea<span class="text-gray-900 dark:text-white">Jobs</span>
+                        Career<span class="text-gray-900 dark:text-white">Hub</span>
                     </h1>
                     </router-link>
                 </div>

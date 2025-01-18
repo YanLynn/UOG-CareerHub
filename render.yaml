@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: laravel-backend
+    env: php
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://careerhub.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: your-database-host
+      - key: DB_PORT
+        value: 3306
+      - key: DB_DATABASE
+        value: overseajobs
+      - key: DB_USERNAME
+        value: overseajobs
+      - key: DB_PASSWORD
+        value: P@ssword

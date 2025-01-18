@@ -5,7 +5,7 @@
         <div class="flex flex-wrap items-center md:justify-between max-md:flex-col gap-6">
             <div class="flex-shrink-0 flex items-center px-4 py-2">
     <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 dark:text-blue-400">
-        Oversea<span class="text-gray-900 dark:text-white">Jobs</span>
+        Career<span class="text-gray-900 dark:text-white">Hub</span>
     </h1>
 </div>
 
