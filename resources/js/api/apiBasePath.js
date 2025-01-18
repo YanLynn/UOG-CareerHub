@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useAuthStore } from '../store';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  //baseURL: 'http://localhost:8000/api',
+  baseURL : 'https://careerhub.onrender.com',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
