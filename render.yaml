@@ -14,12 +14,12 @@ services:
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        value: your-database-host
+        value: dpg-cu5ijjggph6c73bsv010-a
       - key: DB_PORT
         value: 3306
       - key: DB_DATABASE
-        value: overseajobs
+        value: career_hub
       - key: DB_USERNAME
-        value: overseajobs
+        value: career_hub_user
       - key: DB_PASSWORD
-        value: P@ssword
+        value: vd5zGInud3nZETR66qjBBnao1aDs7Mlt
