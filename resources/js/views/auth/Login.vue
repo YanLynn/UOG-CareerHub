@@ -4,7 +4,7 @@
 
         <div class="grid md:grid-cols-2 items-center gap-8">
           <div class="max-md:order-1">
-            <img src="https://readymadeui.com/signin-image.webp" class="w-full aspect-[12/11] object-contain" alt="login-image" />
+            <img src="@images/signin-image.webp" class="w-full aspect-[12/11] object-contain" alt="login-image" />
           </div>
 
           <form class="md:max-w-md w-full mx-auto"  @submit.prevent="handleLogin">
@@ -71,9 +71,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../store';
-import { useToastStore } from '../../store/toastStore';
-
+import { useAuthStore } from '@components/js/store';
+import { useToastStore } from '@components/js/store/toastStore';
+import { storeToRefs } from 'pinia';
 
 const email = ref('');
 const password = ref('');
@@ -81,14 +81,19 @@ const errors = ref({});
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToastStore();
-
+const { isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
 const handleLogin = async () => {
   errors.value = {};
 
   try {
     await authStore.login({ email: email.value, password: password.value });
     toast.showToast('Login successful! Welcome back 👋', 'success');
-    router.push({ name: 'Home' });
+    if(isAdmin){
+        router.push({ name: 'Dashboard' });
+    }else{
+        router.push({ name: 'Home' });
+    }
+
   } catch (error) {
     console.error('Login failed:', error);
 

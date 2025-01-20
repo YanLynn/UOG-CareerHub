@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 export default defineConfig({
     plugins: [
         laravel({
@@ -11,7 +12,9 @@ export default defineConfig({
     ],
     resolve:{
         alias:{
-            vue: "vue/dist/vue.esm-bundler.js"
+            vue: "vue/dist/vue.esm-bundler.js",
+            '@images': resolve(__dirname, './public/src/images'),
+            '@components': resolve(__dirname, './resources'),
         }
     }
 });

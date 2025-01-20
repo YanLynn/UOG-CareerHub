@@ -4,7 +4,7 @@
             class="shadow-lg max-w-6xl w-full rounded-md flex flex-col md:flex-row dark:bg-gray-800 bg-gray-100">
             <!-- Left Side Image -->
             <div class="md:w-1/2 flex items-center justify-center rounded-l-md p-6">
-                <img src="https://readymadeui.com/signin-image.webp" alt="Register Image"
+                <img src="@images/signin-image.webp" alt="Register Image"
                     class="w-full aspect-[12/11] object-contain" />
             </div>
 

@@ -6,9 +6,9 @@
                 <div class="flex-shrink-0 flex items-center px-4 py-2">
                     <router-link to="/">
                         <h1
-                        class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-blue-600 dark:text-blue-400">
-                        Career<span class="text-gray-900 dark:text-white">Hub</span>
-                    </h1>
+                            class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-blue-600 dark:text-blue-400">
+                            Career<span class="text-gray-900 dark:text-white">Hub</span>
+                        </h1>
                     </router-link>
                 </div>
                 <!-- Desktop Navigation -->
@@ -51,7 +51,7 @@
                         </svg>
                     </button>
 
-                    <Menu as="div" class="relative">
+                    <Menu as="div" class="relative z-100">
                         <MenuButton class="flex rounded-full bg-gray-800 text-sm">
                             <img class="h-8 w-8 rounded-full"
                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" alt="User profile" />
@@ -64,20 +64,37 @@
                             leave-to-class="transform opacity-0 scale-95">
                             <MenuItems
                                 class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-md py-1">
-                                <MenuItem>
-                                <a href="#"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Your
-                                    Profile</a>
+
+
+
+                                <MenuItem v-slot="{ active }" v-if="isAdmin">
+                                <router-link :class='{ "bg-blue-500": active }' to="/admin/dashboard"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    Dashboard
+                                </router-link>
                                 </MenuItem>
-                                <MenuItem>
-                                <a href="#"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Settings</a>
+                                <MenuItem v-slot="{ active }">
+                                <router-link :class='{ "bg-blue-500": active }' to="/"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    Documentation
+                                </router-link>
                                 </MenuItem>
-                                <MenuItem v-if="isLoggedIn">
-                                <a href="#" @click="logout"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Sign
-                                    out</a>
+                                <MenuItem v-slot="{ active }">
+                                <router-link :class='{ "bg-blue-500": active }' to="/admin/dashboard"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    test
+                                </router-link>
                                 </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <a :class='{ "bg-blue-500": active }' href=""  @click="logout"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    Sign Out
+                                </a>
+                                </MenuItem>
+
+
+
+
                             </MenuItems>
                         </transition>
                     </Menu>
@@ -121,7 +138,7 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
-
+import { storeToRefs } from 'pinia';
 const navigation = ref([
     { name: 'Home', href: '/', current: true },
     { name: 'Team', href: '/', current: false },
@@ -131,7 +148,7 @@ const navigation = ref([
 const router = useRouter();
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isLoggedIn);
-
+const { isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
 const logout = async () => {
     await authStore.logout();
     router.push('/');

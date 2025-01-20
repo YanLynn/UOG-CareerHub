@@ -1,6 +1,6 @@
 
 
-import { useAuthStore } from '../store';
+import { useAuthStore } from '@components/js/store';
 
 export function useTokenRefresh() {
   const authStore = useAuthStore();

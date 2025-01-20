@@ -6,11 +6,8 @@
            dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
            transition-all duration-500 ease-in-out">
         <Toast />
-
-        <Nav />
-
-
-        <main>
+        <Nav class="fixed top-0 left-0 w-full z-50"/>
+        <main class="pt-10">
             <router-view />
         </main>
         <Footer/>
@@ -19,8 +16,11 @@
 </template>
 
 <script setup>
-import Nav from '../../components/Navbar.vue';
-import Toast from '../../components/Toast.vue';
-import Header from '../../components/Header.vue';
-import Footer from '../../components/Footer.vue';
+import Nav from '@components/js/components/Navbar.vue';
+import Toast from '@components/js/components/Toast.vue';
+import Header from '@components/js/components/Header.vue';
+import Footer from '@components/js/components/Footer.vue';
+
+
+
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gradient-to-b from-white/30 to-white/30 dark:from-gray-900/80 dark:to-gray-800/60 backdrop-blur-md">
+    <div class="bg-gradient-to-b from-white/30 to-white/30 dark:from-gray-900/80 dark:to-gray-800/60 backdrop-blur-md -z-0">
         <!-- Hero Section -->
         <section class="h-80 flex items-center justify-center">
             <div class="text-center px-4 sm:px-8 md:px-16">
