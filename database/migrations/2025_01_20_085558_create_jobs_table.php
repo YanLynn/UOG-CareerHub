@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
-            $table->string('title');
+            $table->unsignedBigInteger('employer_id');
+            $table->unsignedBigInteger('category_id');
+            $table->string('job_title');
             $table->text('description');
-            $table->string('location');
-            $table->enum('employmentType', ['FullTime', 'PartTime', 'Contract', 'Internship', 'Freelance']);
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->decimal('salary', 10, 2)->nullable();
-            $table->enum('status', ['Open', 'Closed'])->default('Open');
             $table->timestamps();
+
+            $table->foreign('employer_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null');
         });
     }
 

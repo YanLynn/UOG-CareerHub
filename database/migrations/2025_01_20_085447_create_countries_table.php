@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('companyName');
-            $table->text('description')->nullable();
-            $table->string('industry')->nullable();
-            $table->string('website')->nullable();
-            $table->string('location')->nullable();
+        Schema::create('countries', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->id(); // This creates an unsignedBigInteger primary key
+            $table->string('name')->unique();
+            $table->string('postal_code')->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('countries');
     }
 };
