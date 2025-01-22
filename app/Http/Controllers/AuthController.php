@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Jobseeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+
 class AuthController extends Controller
 {
     public function __construct()
@@ -38,6 +42,9 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        if($user){
+            User::where('id', $user->id)->update(['last_login' => Carbon::now()]);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -49,32 +56,63 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
+        $getUser = User::where('email', $request->email)->first();
+        if ($getUser == $request->email) {
+            return response()->json(['error' => 'The email has already been taken.'], 400);
+        }
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8',
+            'userType' => 'required|in:Jobseeker,Employer',
+            'companyName' => 'required_if:userType,employer|unique:employees,company_name',
+            'companyWebsite' => 'nullable|url',
+        ], [
+            'email.unique' => 'The email has already been taken.',
+            'password.confirmed' => 'Passwords do not match.',
+            'companyName.required_if' => 'Company name is required for employers.',
+            'companyName.unique' => 'The company name has already been taken.',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // Create the user and handle any other logic
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->last_login = Carbon::now();
+        $user->role = $request->userType;
+        $user->save();
+
+        if ($request->userType === 'Employer') {
+            Employee::create([
+                'user_id' => $user->id,
+                'company_name' => $request->companyName,
+                'company_website' => $request->companyWebsite,
+
+            ]);
+        } elseif ($request->userType === 'Jobeeker') {
+            Jobseeker::create([
+                'user_id' => $user->id,
+            ]);
+        } else {
+            // Handle unexpected userType
+            return response()->json(['error' => 'Invalid user type'], 400);
+        }
 
         $token = Auth::login($user);
         return response()->json([
             'status' => 'success',
-            'message' => 'User created successfully',
+            'message' => 'Registration successful',
             'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+            'token' => $token,
+        ], 201);
     }
 
     public function logout(Request $request)
     {
+
         Auth::logout();  // Invalidate the token
 
         return response()->json([

@@ -20,6 +20,16 @@ const apiService = {
     }
   },
 
+  async register(credentials) {
+    try {
+      const response = await api.post('/register',credentials);
+      return response.data;
+    } catch (err) {
+      console.error('Logout error:', err.response?.data || err.message);
+      throw err;
+    }
+  },
+
   async tokenRefresh() {
     try {
       const response = await api.post('/refresh');

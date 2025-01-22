@@ -14,9 +14,10 @@
 
                 <form @submit.prevent="register">
                     <div class="mb-4">
-                        <input v-model="form.name" type="text" placeholder="Full Name" required class="signin_input" />
-                    </div>
+                        <input v-model="form.name" type="text" placeholder="User Name" required
+                            class="signin_input" />
 
+                    </div>
                     <div class="mb-4">
                         <input v-model="form.email" type="email" placeholder="Email Address" required
                             class="signin_input" />
@@ -28,22 +29,23 @@
                     </div>
 
                     <div class="mb-4">
-                        <input v-model="form.confirmPassword" type="password" placeholder="Confirm Password" required
+                        <input v-model="form.password_confirmation" type="password" placeholder="Confirm Password" required
                             class="signin_input" />
+                            <p v-if="errors" class="text-red-500 text-xs mt-1">{{ errors.general }}</p>
                     </div>
 
                     <!-- User Type Selection -->
                     <div class="mb-6 flex justify-between gap-4">
-                        <button @click.prevent="userType = 'jobseeker'"
-                            :class="userType === 'jobseeker' ? 'active-btn' : 'inactive-btn'" class="primary-btn">Job
+                        <button @click.prevent="userType = 'Jobseeker'"
+                            :class="userType === 'Jobseeker' ? 'active-btn' : 'inactive-btn'" class="primary-btn">Job
                             Seeker</button>
-                        <button @click.prevent="userType = 'employer'"
-                            :class="userType === 'employer' ? 'active-btn' : 'inactive-btn'"
+                        <button @click.prevent="userType = 'Employer'"
+                            :class="userType === 'Employer' ? 'active-btn' : 'inactive-btn'"
                             class="primary-btn">Employer</button>
                     </div>
 
                     <!-- Employer Fields -->
-                    <div v-if="userType === 'employer'">
+                    <div v-if="userType === 'Employer'">
                         <div class="mb-4">
                             <input v-model="form.companyName" type="text" placeholder="Company Name"
                                 class="signin_input" />
@@ -67,30 +69,58 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useToastStore } from '@components/js/store/toastStore';
+import { useAuthStore } from '@components/js/store';
+import { useRouter } from 'vue-router';
+import { error } from 'laravel-mix/src/Log';
+
+const router = useRouter();
+const toast = useToastStore();
+const authStore = useAuthStore();
 
 const isDarkMode = ref(false);
-const userType = ref('jobseeker');
+const userType = ref('Jobseeker');
+const errors = ref({});
 const form = ref({
-    name: '',
+    name:'',
     email: '',
     password: '',
-    confirmPassword: '',
+    password_confirmation: '',
     companyName: '',
     companyWebsite: '',
 });
 
-const register = () => {
-    if (form.value.password !== form.value.confirmPassword) {
-        alert('Passwords do not match');
+const register = async () => {
+    errors.value = {};
+    // Validation: Password match
+    if (form.value.password !== form.value.password_confirmation) {
+        errors.value.general ='Passwords do not match!';
         return;
     }
-    const payload = {
-        userType: userType.value,
-        ...form.value,
-    };
-    console.log('Registering user:', payload);
+
+    try {
+        // Attempt user registration
+        await authStore.register({
+            name:form.value.name,
+            email: form.value.email,
+            password: form.value.password,
+            password_confirmation: form.value.password_confirmation,
+            userType: userType.value,
+            companyName: userType.value === 'Employer' ? form.value.companyName : null,
+            companyWebsite: userType.value === 'Employer' ? form.value.companyWebsite : null,
+        });
+
+        // Show success toast and redirect
+        toast.showToast('Registration successful! Welcome aboard 👋', 'success');
+        router.push('/'); // Redirect to home or dashboard
+    } catch (err) {
+        console.error('Registration error:', err);
+        errors.value.general = err.response?.data?.message;
+        //toast.showToast(err.response?.data?.message || 'Registration failed. Please try again.', 'error');
+    }
 };
 </script>
+
 
 <style scoped>
 

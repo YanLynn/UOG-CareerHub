@@ -20,6 +20,7 @@
         <main :class="['transition-all duration-300', isSidebarOpen ? 'ml-64' : 'ml-0', 'md:ml-64', 'p-4']">
             <router-view />
         </main>
+        <Toast/>
     </div>
 </template>
 
@@ -28,6 +29,7 @@
 import SideBarVue from '@components/js/components/SideBar.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Toast from '@components/js/components/Toast.vue'
 const isSidebarOpen = ref(false);
 const router = useRouter();
 

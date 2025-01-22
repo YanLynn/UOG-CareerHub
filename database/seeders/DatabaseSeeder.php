@@ -15,11 +15,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersTableSeeder::class,
-            CompaniesTableSeeder::class,
-            JobsTableSeeder::class,
-            ApplicationsTableSeeder::class,
-            ChatsTableSeeder::class,
-            NotificationsTableSeeder::class,
         ]);
     }
 }

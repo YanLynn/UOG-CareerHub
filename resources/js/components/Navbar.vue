@@ -85,11 +85,11 @@
                                     test
                                 </router-link>
                                 </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <a :class='{ "bg-blue-500": active }' href=""  @click="logout"
+                                <MenuItem v-slot="{ active }" v-if="isLoggedIn">
+                                <button :class='{ "bg-blue-500": active }' @click="logout"
                                     class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                                     Sign Out
-                                </a>
+                                </button>
                                 </MenuItem>
 
 
@@ -149,8 +149,11 @@ const router = useRouter();
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isLoggedIn);
 const { isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
+
 const logout = async () => {
+
     await authStore.logout();
+
     router.push('/');
 };
 

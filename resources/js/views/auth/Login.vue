@@ -38,7 +38,7 @@
                 </svg>
 
               </div>
-              <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
+               <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
                 <p v-if="errors" class="text-red-500 text-xs mt-1">{{ errors.general }}</p>
             </div>
 
@@ -82,13 +82,15 @@ const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToastStore();
 const { isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
+
+
 const handleLogin = async () => {
   errors.value = {};
 
   try {
     await authStore.login({ email: email.value, password: password.value });
     toast.showToast('Login successful! Welcome back 👋', 'success');
-    if(isAdmin){
+    if(authStore.isAdmin){
         router.push({ name: 'Dashboard' });
     }else{
         router.push({ name: 'Home' });
