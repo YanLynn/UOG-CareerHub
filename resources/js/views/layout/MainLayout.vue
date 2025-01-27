@@ -5,6 +5,7 @@
            bg-[url('https://readymadeui.com/bg-effect.svg')]
            dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
            transition-all duration-500 ease-in-out">
+
         <Toast />
         <Nav class="fixed top-0 left-0 w-full z-50"/>
         <main class="pt-10">

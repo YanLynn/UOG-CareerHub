@@ -1,6 +1,7 @@
 <template>
     <div class="bg-gradient-to-b from-white/30 to-white/30 dark:from-gray-900/80 dark:to-gray-800/60 backdrop-blur-md -z-0">
         <!-- Hero Section -->
+
         <section class="h-80 flex items-center justify-center">
             <div class="text-center px-4 sm:px-8 md:px-16">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
@@ -15,7 +16,7 @@
                     <input type="text" placeholder="Country"
                         class="w-full md:w-72 px-4 py-2 rounded-md bg-white/70 dark:bg-gray-700/70 text-gray-900 dark:text-gray-100 backdrop-blur-md focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                     <button
-                        class="px-6 py-2 w-full md:w-auto bg-blue-600 text-white rounded-md hover:bg-blue-700 transition shadow-md">
+                        class="btn-blue">
                         Search
                     </button>
                 </div>
@@ -43,70 +44,72 @@
             </div>
         </section>
         <section class="py-8 px-6 bg-gray-100/20 dark:bg-gray-800/50">
-            <div class="container mx-auto">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Quick Search</h3>
+    <div class="container mx-auto">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Quick Search</h3>
 
-                <!-- Classifications -->
-                <div class="mb-4">
-                    <span class="font-medium text-gray-600 dark:text-gray-400">Classifications:</span>
-                    <div class="flex flex-wrap gap-4 mt-3">
-                        <a href="#" class="badge-pill-red">
-                            <i class="fas fa-chart-line mr-2"></i> Accounting
-                        </a>
-                        <a href="#" class="badge-pill-blue">
-                            <i class="fas fa-graduation-cap mr-2"></i> Education
-                        </a>
-                        <a href="#" class="badge-pill-green">
-                            <i class="fas fa-shield-alt mr-2"></i> Defence
-                        </a>
-                        <a href="#" class="badge-pill-purple">
-                            <i class="fas fa-stethoscope mr-2"></i> Healthcare
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Major Countries -->
-                <div class="mb-4">
-                    <span class="font-medium text-gray-600 dark:text-gray-400">Major Countries:</span>
-                    <div class="flex flex-wrap gap-4 mt-3">
-                        <a href="#" class="badge-pill-blue">
-                            <i class="fas fa-flag-usa mr-2"></i> USA
-                        </a>
-                        <a href="#" class="badge-pill-red">
-                            <i class="fas fa-flag mr-2"></i> UK
-                        </a>
-                        <a href="#" class="badge-pill-green">
-                            <i class="fas fa-flag mr-2"></i> Canada
-                        </a>
-                        <a href="#" class="badge-pill-yellow">
-                            <i class="fas fa-flag mr-2"></i> Australia
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Other Categories -->
-                <div>
-                    <span class="font-medium text-gray-600 dark:text-gray-400">Other:</span>
-                    <div class="flex flex-wrap gap-4 mt-3">
-                        <a href="#" class="badge-pill-purple">
-                            <i class="fas fa-briefcase mr-2"></i> All Jobs
-                        </a>
-                        <a href="#" class="badge-pill-pink">
-                            <i class="fas fa-home mr-2"></i> Remote Jobs
-                        </a>
-                        <a href="#" class="badge-pill-blue">
-                            <i class="fas fa-user-tie mr-2"></i> Internships
-                        </a>
-                    </div>
-                </div>
+        <!-- Classifications -->
+        <div class="mb-4">
+            <span class="font-medium text-gray-600 dark:text-gray-400">Classifications:</span>
+            <div class="flex flex-wrap gap-4 mt-3">
+                <a href="#" class="badge-pill-red">
+                    <i class="pi pi-chart-line mr-2"></i> Accounting
+                </a>
+                <a href="#" class="badge-pill-blue">
+                    <i class="pi pi-graduation-cap mr-2"></i> Education
+                </a>
+                <a href="#" class="badge-pill-green">
+                    <i class="pi pi-shield mr-2"></i> Defence
+                </a>
+                <a href="#" class="badge-pill-purple">
+                    <i class="pi pi-heart mr-2"></i> Healthcare
+                </a>
             </div>
-        </section>
+        </div>
+
+        <!-- Major Countries -->
+        <div class="mb-4">
+            <span class="font-medium text-gray-600 dark:text-gray-400">Major Countries:</span>
+            <div class="flex flex-wrap gap-4 mt-3">
+                <a href="#" class="badge-pill-blue">
+                    <i class="pi pi-flag mr-2"></i> USA
+                </a>
+                <a href="#" class="badge-pill-red">
+                    <i class="pi pi-flag mr-2"></i> UK
+                </a>
+                <a href="#" class="badge-pill-green">
+                    <i class="pi pi-flag mr-2"></i> Canada
+                </a>
+                <a href="#" class="badge-pill-yellow">
+                    <i class="pi pi-flag mr-2"></i> Australia
+                </a>
+            </div>
+        </div>
+
+        <!-- Other Categories -->
+        <div>
+            <span class="font-medium text-gray-600 dark:text-gray-400">Other:</span>
+            <div class="flex flex-wrap gap-4 mt-3">
+                <a href="#" class="badge-pill-purple">
+                    <i class="pi pi-briefcase mr-2"></i> All Jobs
+                </a>
+                <a href="#" class="badge-pill-pink">
+                    <i class="pi pi-home mr-2"></i> Remote Jobs
+                </a>
+                <a href="#" class="badge-pill-blue">
+                    <i class="pi pi-user mr-2"></i> Internships
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import Carousel from 'primevue/carousel';
+import Button from 'primevue/button';
 const categories = ref([
     { title: 'Technology', description: 'Discover jobs in software development, AI, and IT support.' },
     { title: 'Marketing', description: 'Explore roles in digital marketing, SEO, and content creation.' },

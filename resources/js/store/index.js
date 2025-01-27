@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', {
         isVisible: false,
         message: '',
         type: 'success',
+        userLists: [],
     }),
 
     getters: {
@@ -67,6 +68,25 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
+        async userList() {
+
+            this.loading = true;
+            try {
+                const users = await apiService.userList();
+
+                if (!users || !users.user) {
+                    this.authError = 'No users found';
+                    this.userLists = [];
+                }
+                return this.userLists = users.user;
+
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
         async logout() {
             try {
                 //await apiService.logout();

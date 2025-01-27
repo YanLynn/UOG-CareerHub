@@ -1,171 +1,121 @@
 <template>
-    <Disclosure as="nav" :class="isDarkMode ? 'bg-gray-900' : 'bg-gray-100'" v-slot="{ open }">
-        <div class="mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center px-4 py-2">
-                    <router-link to="/">
-                        <h1
-                            class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-blue-600 dark:text-blue-400">
-                            Career<span class="text-gray-900 dark:text-white">Hub</span>
-                        </h1>
-                    </router-link>
-                </div>
-                <!-- Desktop Navigation -->
-                <div class="hidden sm:flex sm:items-center sm:space-x-6">
-                    <ul class="flex space-x-6">
-                        <li v-for="item in navigation" :key="item.name">
-                            <router-link :to="item.href" :class="[
-                                item.current ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-700 dark:text-gray-300',
-                                'hover:underline'
-                            ]">
-                                {{ item.name }}
-                            </router-link>
-                        </li>
+    <div>
+        <Menubar :model="items" class="flex justify-between">
+            <!-- Start Slot -->
+            <template #start>
+                <router-link to="/">
+                    <h1
+                        class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-blue-600 dark:text-blue-400">
+                        Career<span class="text-gray-900 dark:text-white">Hub</span>
+                    </h1>
+                </router-link>
+            </template>
 
-                    </ul>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="sm:hidden flex items-center">
-                    <DisclosureButton
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                        <Bars3Icon v-if="!open" class="h-6 w-6" aria-hidden="true" />
-                        <XMarkIcon v-else class="h-6 w-6" aria-hidden="true" />
-                    </DisclosureButton>
-                </div>
-
-                <!-- Right Icons -->
-                <div class="hidden sm:flex sm:items-center sm:space-x-4">
-                    <button @click="toggleDarkMode"
-                        class="p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
-                        <svg v-if="!isDarkMode" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3v1m0 16v1m8.66-9h-1M4.34 12h-1m14.14 6.14l-.7-.7M6.56 6.56l-.7-.7m12.02 0l-.7.7M6.56 17.44l-.7.7M12 5a7 7 0 100 14 7 7 0 000-14z" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17.293 14.707A8 8 0 019.293 6.707a8.002 8.002 0 108 8z" />
-                        </svg>
-                    </button>
-
-                    <Menu as="div" class="relative z-100">
-                        <MenuButton class="flex rounded-full bg-gray-800 text-sm">
-                            <img class="h-8 w-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" alt="User profile" />
-                        </MenuButton>
-                        <transition enter-active-class="transition ease-out duration-100"
-                            enter-from-class="transform opacity-0 scale-95"
-                            enter-to-class="transform opacity-100 scale-100"
-                            leave-active-class="transition ease-in duration-75"
-                            leave-from-class="transform opacity-100 scale-100"
-                            leave-to-class="transform opacity-0 scale-95">
-                            <MenuItems
-                                class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-md py-1">
-
-
-
-                                <MenuItem v-slot="{ active }" v-if="isAdmin">
-                                <router-link :class='{ "bg-blue-500": active }' to="/admin/dashboard"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    Dashboard
-                                </router-link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <router-link :class='{ "bg-blue-500": active }' to="/"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    Documentation
-                                </router-link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <router-link :class='{ "bg-blue-500": active }' to="/admin/dashboard"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    test
-                                </router-link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }" v-if="isLoggedIn">
-                                <button :class='{ "bg-blue-500": active }' @click="logout"
-                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    Sign Out
-                                </button>
-                                </MenuItem>
-
-
-
-
-                            </MenuItems>
-                        </transition>
-                    </Menu>
-                    <div class="hidden sm:flex sm:items-right sm:space-x-6">
-                        <ul class="flex space-x-6">
-                            <li v-if="isLoggedIn">
-                                <span class="hover:underline dark:text-white">{{ authStore.currentUser.name }}</span>
-                            </li>
-                            <li v-if="!isLoggedIn">
-                                <router-link to="/login" class="hover:underline">Login</router-link>
-                            </li>
-                            <li v-if="!isLoggedIn">
-                                <router-link to="/register" class="hover:underline">Register</router-link>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation -->
-            <DisclosurePanel class="sm:hidden">
-                <ul class="space-y-1 px-2 pt-2 pb-3">
-                    <li v-for="item in navigation" :key="item.name">
-                        <a :href="item.href" class="block px-3 py-2 rounded-md text-base font-medium" :class="[
-                            item.current ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300',
-                            'hover:bg-gray-200 dark:hover:bg-gray-600'
-                        ]">
-                            {{ item.name }}
+            <!-- Center Slot -->
+            <template #center>
+                <div class="flex justify-center space-x-6">
+                    <template v-for="(item, index) in items" :key="index">
+                        <a
+                            class="text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+                            v-bind="item.action">
+                            <span>{{ item.label }}</span>
                         </a>
-                    </li>
-                </ul>
-            </DisclosurePanel>
-        </div>
-    </Disclosure>
+                    </template>
+                </div>
+            </template>
+
+            <!-- End Slot -->
+            <template #end>
+                <div class="flex items-center space-x-4">
+                    <template v-if="isLoggedIn">
+                        <a href="#" class="text-sm font-medium hover:underline" @click.prevent="logout">Logout</a>
+                    </template>
+                    <template v-else>
+                        <router-link
+                            to="/login"
+                            class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                            Login
+                        </router-link>
+                        <router-link
+                            to="/register"
+                            class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                            Register
+                        </router-link>
+                    </template>
+
+                    <!-- Dark Mode Toggle -->
+                    <button
+                        type="button"
+                        class="inline-flex w-8 h-8 items-center justify-center surface-0 dark:surface-800 border border-surface-200 dark:border-surface-600 rounded"
+                        @click="toggleDarkMode"
+                        :aria-label="darkMode ? 'Activate light mode' : 'Activate dark mode'">
+                        <i :class="`pi ${darkMode ? 'pi-sun' : 'pi-moon'} dark:text-white`"></i>
+                    </button>
+                </div>
+            </template>
+        </Menubar>
+    </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import Menubar from 'primevue/menubar';
+import Badge from 'primevue/badge';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { storeToRefs } from 'pinia';
-const navigation = ref([
-    { name: 'Home', href: '/', current: true },
-    { name: 'Team', href: '/', current: false },
-    { name: 'Projects', href: '/', current: false },
-]);
 
+// Router and Auth Store
 const router = useRouter();
 const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.isLoggedIn);
-const { isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
+const { isLoggedIn, isAdmin, isEmployer, isJobseeker } = storeToRefs(authStore);
 
+// Logout Functionality
 const logout = async () => {
-
     await authStore.logout();
-
     router.push('/');
 };
 
-const isDarkMode = ref(false);
-const toggleDarkMode = () => {
-    isDarkMode.value = !isDarkMode.value;
-    document.documentElement.classList.toggle('dark', isDarkMode.value);
-    localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
-};
+// Menu Items
+const items = ref([
+    {
+        label: 'Home',
+        icon: 'pi pi-home',
+        command: () => router.push('/'),
+    },
+    {
+        label: 'Projects',
+        icon: 'pi pi-search',
+        badge: 3,
+        items: [
+            { label: 'Core', icon: 'pi pi-bolt' },
+            { label: 'Blocks', icon: 'pi pi-server' },
+            { separator: true },
+            { label: 'UI Kit', icon: 'pi pi-pencil' },
+        ],
+    },
+]);
 
-onMounted(() => {
-    isDarkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('theme') === 'dark';
-    document.documentElement.classList.toggle('dark', isDarkMode.value);
-});
+// Dark Mode State
+const darkMode = ref(false);
+
+// Toggle Dark Mode
+const toggleDarkMode = () => {
+    const root = document.documentElement;
+    darkMode.value = !darkMode.value;
+    if (darkMode.value) {
+        root.classList.add('p-dark');
+    } else {
+        root.classList.remove('p-dark');
+    }
+};
 </script>
+
+<style scoped>
+.menubar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
