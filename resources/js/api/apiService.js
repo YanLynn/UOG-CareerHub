@@ -42,7 +42,6 @@ const apiService = {
   async userList() {
     try {
       const response = await api.get('/user');
-      console.log('API Response:', response);
       if (!response.data || !response.data.user) {
         throw new Error('No user data found in response.......');
       }
