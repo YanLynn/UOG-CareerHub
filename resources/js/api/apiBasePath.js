@@ -25,14 +25,17 @@ apiClient.interceptors.request.use(
 
 
 apiClient.interceptors.response.use(
+
     (response) => response,
     async (error) => {
         const authStore = useAuthStore();
         if (error.response?.status === 401) {
             console.warn('Unauthorized (401) - Logging out...');
-            router.push({ name: 'unauthorized' })
+
             authStore.logout();
+            localStorage.removeItem('user');
             localStorage.clear();
+            router.push({ name: 'Unauthorized' })
             return Promise.reject(error);
         }
         return Promise.reject(error);

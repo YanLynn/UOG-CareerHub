@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', {
         message: '',
         type: 'success',
         userLists: [],
+        jobSeekerProfile:[],
     }),
 
     getters: {
@@ -22,6 +23,20 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
+        async getJobSeekerProfile() {
+
+            try {
+                const res = await apiService.getJobSeekerProfile();
+                this.jobSeekerProfile = res;
+                return Promise.resolve();
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+
         async login(credentials) {
             this.loading = true;
             this.authError = null;

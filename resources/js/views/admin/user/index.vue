@@ -1,13 +1,17 @@
 <template>
     <div class="card">
+        <ConfirmDialog></ConfirmDialog>
         <ReusableDataTable :data="users" :loading="loading" :columns="columns"
             :globalFilterFields="['name', 'email', 'role']">
             <!-- Define the slot for the Actions column -->
             <template #body-actions="{ data }">
-                <button class="btn-blue mx-2" @click="editUser(data.id)">Edit</button>
-                <button class="btn-red" @click="deleteUser(data.id)">Delete</button>
+                <button class="btn-blue mx-2" @click="editUser(data.id), visible = true">Edit</button>
+                <button class="btn-red" @click="deleteUser(data.id)" label="Delete" severity="danger">Delete</button>
             </template>
         </ReusableDataTable>
+        <Drawer v-model:visible="visible" header="Edit User" position="right" class="!w-full md:!w-80 lg:!w-[30rem]">
+            <p>user id = </p>
+        </Drawer>
     </div>
 </template>
 
@@ -15,11 +19,15 @@
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store';
 import ReusableDataTable from '../../../components/ReusableDataTable.vue';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 const authStore = useAuthStore();
-const roles = ref(['Admin', 'Employer', 'JobSeeker']);
 const users = ref([]);
 const loading = ref(true);
+const visible = ref(false);
+const confirm = useConfirm();
+const toast = useToast();
 
 const columns = ref([
     { field: 'name', header: 'Name' },
@@ -58,10 +66,31 @@ const editUser = (userId) => {
 };
 
 const deleteUser = (userId) => {
-    if (confirm('Are you sure you want to delete this user?')) {
-        console.log(`Delete user with ID: ${userId}`);
-        users.value = users.value.filter(user => user.id !== userId);
-    }
+
+    confirm.require({
+        message: 'Do you want to delete this record?',
+        header: 'Danger Zone',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Cancel',
+        rejectProps: {
+            label: 'Cancel',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Delete',
+            severity: 'danger'
+        },
+        accept: () => {
+            console.log(`Delete user with ID: ${userId}`);
+            users.value = users.value.filter(user => user.id !== userId);
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+        },
+        reject: () => {
+            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+
 };
 
 </script>

@@ -56,6 +56,24 @@ const apiService = {
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
   },
+
+  async getJobSeekerProfile(){
+    try {
+        const response = await api.get('/getJobSeekerProfile');
+        if (!response.data) {
+          throw new Error('No user data found in response.......');
+        }
+        return response.data;
+      } catch (err) {
+        console.error('jobSeeker Profile:', err.response?.data || err.message);
+        throw err;
+      }
+  }
+
+
+
+
+
 };
 
 export default apiService;

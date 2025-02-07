@@ -1,8 +1,7 @@
 <template>
-    <div class="">
-        <DataTable :value="data" paginator showGridlines editMode="row" :rows="rows" dataKey="id" filterDisplay="menu"
-            :loading="loading" :globalFilterFields="globalFilterFields">
-
+    <div>
+        <DataTable :value="data" paginator :rows="rows" dataKey="id" filterDisplay="menu" :loading="loading"
+            :globalFilterFields="globalFilterFields" v-model:filters="filters">
             <template #header>
                 <div class="flex justify-between">
                     <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter" />
@@ -10,13 +9,15 @@
                         <InputIcon>
                             <i class="pi pi-search" />
                         </InputIcon>
-                        <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+                        <InputText v-model="filters['global'].value" placeholder="Keyword Search"
+                            @input="applyFilter" />
                     </IconField>
                 </div>
             </template>
+
             <template #empty> No data found. </template>
             <template #loading> Loading data. Please wait. </template>
-            <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header">
+            <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="true">
                 <template v-if="$slots[`body-${col.field}`]" #body="slotProps">
                     <slot :name="`body-${col.field}`" :data="slotProps.data"></slot>
                 </template>
@@ -26,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted } from 'vue';
+import { ref, defineProps } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 
 const props = defineProps({
@@ -38,19 +39,22 @@ const props = defineProps({
 });
 
 const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    global: { value: '', matchMode: FilterMatchMode.CONTAINS },
 });
 
 props.columns.forEach(column => {
-    console.log('column', column)
     filters.value[column.field] = { value: null, matchMode: column.matchMode || FilterMatchMode.STARTS_WITH };
 });
+
+
+const applyFilter = () => {
+    filters.value = { ...filters.value };
+};
 
 const clearFilter = () => {
     Object.keys(filters.value).forEach(key => {
         filters.value[key].value = null;
     });
+    filters.value.global.value = '';
 };
-
-
 </script>

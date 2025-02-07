@@ -5,10 +5,15 @@
            bg-[url('https://readymadeui.com/bg-effect.svg')]
            dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
            transition-all duration-500 ease-in-out">
+           <Toast />
         <router-view />
     </div>
 </template>
 
+
+
+
 <style>
 @import 'tailwindcss/tailwind.css';
+
 </style>

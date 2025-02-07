@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('career_histories', function (Blueprint $table) {
             $table->id();
-        $table->unsignedBigInteger('jobseeker_id')->unique();
-        $table->string('job_title');
-        $table->date('start_date');
-        $table->date('end_date')->nullable();
-        $table->text('description')->nullable();
-        $table->boolean('still_in_role')->default(false);
-        $table->timestamps();
-
-        $table->foreign('jobseeker_id')->references('id')->on('jobseekers')->onDelete('cascade');
+            $table->string('job_title');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('still_in_role')->default(false);
+            $table->timestamps();
         });
     }
 

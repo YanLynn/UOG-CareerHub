@@ -15,6 +15,8 @@ import ToastService from 'primevue/toastservice';
 import AppState from './composables/plugins/appState.js';
 import Noir from './composables/plugins/presets/Noir.js';
 
+
+
 const app = createApp(App);
 const pinia = createPinia();
 app.use(PrimeVue, {
@@ -27,6 +29,10 @@ app.use(PrimeVue, {
         }
     }
 });
+
+
+
+
 
 app.use(AppState);
 app.use(ConfirmationService);

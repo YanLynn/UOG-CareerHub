@@ -5,41 +5,67 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jobseeker extends Model
+class JobSeeker extends Model
 {
     use HasFactory;
+
+
+    protected $table = 'jobseekers';
     protected $fillable = [
         'user_id',
-        'language_id',
-        'skill_id',
-        'country_id',
         'profile_img',
         'social_url',
         'personal_summary',
-        'career_history_id',
-        'education_id',
         'resume_url',
+        'country_id',
+        'education_id',
+        'skill_id',
+        'language_id',
+        'career_history_id'
     ];
 
-    /**
-     * Define the relationship with the User model.
-     * A jobseeker belongs to a user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Define the relationship with the Country model.
-     * A jobseeker belongs to a country.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function educations()
+    {
+        if (empty($this->education_id)) {
+            return collect([]);
+        }
+        $educationIds = array_map('intval', array_filter(explode(',', $this->education_id)));
+        return Education::whereIn('id', $educationIds)->get();
+    }
+    public function skills()
+    {
+        if (empty($this->skill_id)) {
+            return collect([]);
+        }
+        $skillIds = array_map('intval', array_filter(explode(',', $this->skill_id)));
+        return Skill::whereIn('id', $skillIds)->get();
+    }
+
+    public function languages()
+    {
+        if (empty($this->language_id)) {
+            return collect([]);
+        }
+        $languageIds = array_map('intval', array_filter(explode(',', $this->language_id)));
+        return Language::whereIn('id', $languageIds)->get();
+    }
+
+    public function careerHistories()
+    {
+        if (empty($this->career_history_id)) {
+            return collect([]);
+        }
+        $careerHistoryIds = array_map('intval', array_filter(explode(',', $this->career_history_id)));
+        return CareerHistory::whereIn('id', $careerHistoryIds)->get();
     }
 }
