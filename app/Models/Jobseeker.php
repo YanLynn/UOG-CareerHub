@@ -17,6 +17,7 @@ class JobSeeker extends Model
         'social_url',
         'personal_summary',
         'resume_url',
+        'resume_file_name',
         'country_id',
         'education_id',
         'skill_id',

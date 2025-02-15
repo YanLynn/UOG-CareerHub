@@ -1,4 +1,5 @@
 <template>
+    <div class="pt-6">
     <div class="bg-gradient-to-b from-white/30 to-white/30 dark:from-gray-900/80 dark:to-gray-800/60 backdrop-blur-md -z-0">
         <!-- Hero Section -->
 
@@ -104,6 +105,7 @@
 </section>
 
     </div>
+</div>
 </template>
 
 <script setup>

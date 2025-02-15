@@ -26,7 +26,7 @@
                     <Menu as="div" class="relative inline-block text-left" v-if="isLoggedIn">
                         <div>
                             <MenuButton
-                                class="uppercase inline-flex w-full justify-center gap-x-1.5  bg-white px-3 py-2 text-sm text-gray-900 ring-0  ring-gray-300 ring-inset hover:bg-gray-50">
+                                class="uppercase inline-flex w-full justify-center gap-x-1.5  bg-white px-3 py-2 text-sm text-gray-900 ring-0  ring-gray-300 ring-inset  dark:bg-black/10 dark:text-white">
                                 {{currentUser.name}}
                                 <ChevronDownIcon class="-mr-1 size-5 text-gray-400" aria-hidden="true" />
                             </MenuButton>
@@ -37,24 +37,24 @@
                             enter-to-class="transform opacity-100 scale-100"
                             leave-active-class="transition ease-in duration-75"
                             leave-from-class="transform opacity-100 scale-100"
-                            leave-to-class="transform opacity-0 scale-95">
+                            leave-to-class="transform opacity-0 scale-95" >
                             <MenuItems
-                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden">
+                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-black dark:text-white ring-1 shadow-lg ring-black/5 focus:outline-hidden ">
                                 <div class="py-1">
                                     <MenuItem v-slot="{ active }" v-if="isAdmin">
                                     <router-link to="/dashboard"
-                                        :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700', 'block px-4 py-2 text-sm']">
+                                        :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block px-4 py-2 text-sm']">
                                         Dashboard</router-link>
                                     </MenuItem>
                                     <MenuItem v-slot="{ active }" v-if="!isAdmin">
                                         <router-link :to="{ name: isEmployer ? 'bbRouteName' : 'JobSeekerProfile' }"
-                                        :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700', 'block px-4 py-2 text-sm']">Profile</router-link>
+                                        :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block px-4 py-2 text-sm']">Profile</router-link>
                                     </MenuItem>
 
                                     <form method="POST" action="#">
                                         <MenuItem v-slot="{ active }">
                                         <button type="submit" @click.prevent="logout"
-                                            :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700', 'block w-full px-4 py-2 text-left text-sm']">Sign
+                                            :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block w-full px-4 py-2 text-left text-sm']">Sign
                                             out</button>
                                         </MenuItem>
                                     </form>

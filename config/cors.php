@@ -19,16 +19,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://152.42.188.128', 'http://career-hub.com','http://localhost:8000'],
 
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => false,
 
     'max_age' => 0,
 
     'supports_credentials' => false,
-
 ];

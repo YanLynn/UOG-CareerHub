@@ -36,7 +36,50 @@ export const useAuthStore = defineStore('auth', {
                 this.loading = false;
             }
         },
-
+        async searchCountry($query) {
+            try {
+                const res = await apiService.searchCountry($query);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async updateProfile($formData) {
+            try {
+                const res = await apiService.updateProfile($formData);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async updateSkill($formData) {
+            try {
+                const res = await apiService.updateSkill($formData);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async uploadResumeFile($formData, progressCallback = null) {
+            try {
+                const res = await apiService.uploadResumeFile($formData,progressCallback);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
         async login(credentials) {
             this.loading = true;
             this.authError = null;

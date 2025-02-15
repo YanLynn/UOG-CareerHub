@@ -150,3 +150,14 @@
 
 }
 
+
+
+/* Custom ProgressBar Styles */
+.custom-progress-bar .p-progressbar {
+    height: 6px !important; /* Reduce height */
+    border-radius: 8px; /* Optional: Rounded corners */
+}
+
+.custom-progress-bar .p-progressbar-value {
+    background-color: #90ee90 !important; /* Light Green */
+}

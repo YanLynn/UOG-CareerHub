@@ -68,8 +68,65 @@ const apiService = {
         console.error('jobSeeker Profile:', err.response?.data || err.message);
         throw err;
       }
-  }
+  },
 
+  async searchCountry($query){
+    try {
+        const response = await api.get(`/countries?query=${$query}`);
+        if (!response.data) {
+          throw new Error('No country data found in response.......');
+        }
+        return response.data;
+      } catch (err) {
+        console.error('country:', err.response?.data || err.message);
+        throw err;
+      }
+  },
+  async updateProfile($formData){
+    try {
+        const response = await api.post('/updateProfile',$formData);
+        if (!response.data) {
+          throw new Error('No profile data found in response.......');
+        }
+        return response.data;
+      } catch (err) {
+        console.error('profile:', err.response?.data || err.message);
+        throw err;
+      }
+  },
+
+  async updateSkill($formData){
+    try {
+        const response = await api.post('/updateSkill',$formData);
+        if (!response.data) {
+          throw new Error('No skill data found in response.......');
+        }
+        return response.data;
+      } catch (err) {
+        console.error('skill:', err.response?.data || err.message);
+        throw err;
+      }
+  },
+  async  uploadResumeFile($formData, progressCallback = null) {
+    try {
+        const response = await api.post('/uploadResumeFile', $formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: progressCallback ? progressCallback : (progressEvent) => {
+                console.log("Upload Progress:", Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            },
+        });
+
+        if (!response.data) {
+            throw new Error('No document data found in response.......');
+        }
+        return response.data;
+    } catch (err) {
+        console.error('resumeFile:', err.response?.data || err.message);
+        throw err;
+    }
+}
 
 
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->id(); // This creates an unsignedBigInteger primary key
             $table->string('name')->unique();
-            $table->string('postal_code')->unique();
+            $table->string('code')->unique();
             $table->timestamps();
         });
     }

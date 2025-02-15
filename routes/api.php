@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobSeekerProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,11 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');          // Public route for login
-    Route::post('register', 'register');    // Public route for registration
-    Route::post('logout', 'logout')->middleware('auth:api');  // Protected route for logout
-    Route::post('refresh', 'refresh');      // Public route for token refresh
-    Route::get('userProfile', 'userProfile')->middleware('auth:api'); // Protected route for profile
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout')->middleware('auth:api');
+    Route::post('refresh', 'refresh');
+    Route::get('userProfile', 'userProfile')->middleware('auth:api');
 });
 
 
@@ -34,4 +35,10 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:api')->group(function(){
     Route::get('/user',[UserController::class,'index']);
     Route::get('/getJobSeekerProfile',[JobSeekerProfileController::class,'getJobSeeker']);
+    Route::post('/updateProfile',[JobSeekerProfileController::class,'updateProfile']);
+    Route::post('/updateSkill',[JobSeekerProfileController::class,'updateSkill']);
+    Route::post('/uploadResumeFile',[JobSeekerProfileController::class,'uploadResumeFile']);
 });
+
+
+Route::get('/countries', [SearchController::class, 'searchCountry']);

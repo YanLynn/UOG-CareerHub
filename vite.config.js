@@ -15,7 +15,7 @@ export default defineConfig({
             resolvers: [
                 PrimeVueResolver()
             ]
-        })
+        }),
     ],
     resolve:{
         alias:{
@@ -23,6 +23,14 @@ export default defineConfig({
             '@images': resolve(__dirname, './public/src/images'),
             '@components': resolve(__dirname, './resources'),
 
+        }
+    },
+    optimizeDeps: {
+        exclude: ['path', 'fs', 'url', 'source-map-js']
+    },
+    build: {
+        rollupOptions: {
+            external: ['path', 'fs', 'url', 'source-map-js']
         }
     }
 });
