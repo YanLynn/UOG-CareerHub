@@ -18,9 +18,14 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             SkillSeeder::class,
             LanguageSeeder::class,
+            EmployerSeeder::class,
+            JobSeekerSeeder::class,
             CareerHistorySeeder::class,
             EducationSeeder::class,
-            JobSeekerSeeder::class
+            CategorySeeder::class,
+            JobSeeder::class,
+            JobApplySeeder::class,
+
         ]);
     }
 }

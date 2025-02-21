@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\Jobseeker;
+use App\Models\Employer;
+use App\Models\JobSeeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required|min:8',
-            'userType' => 'required|in:Jobseeker,Employer',
+            'userType' => 'required|in:JobSeeker,Employer',
             'companyName' => 'required_if:userType,employer|unique:employees,company_name',
             'companyWebsite' => 'nullable|url',
         ], [
@@ -86,14 +86,14 @@ class AuthController extends Controller
         $user->save();
 
         if ($request->userType === 'Employer') {
-            Employee::create([
+            Employer::create([
                 'user_id' => $user->id,
                 'company_name' => $request->companyName,
                 'company_website' => $request->companyWebsite,
 
             ]);
         } elseif ($request->userType === 'Jobeeker') {
-            Jobseeker::create([
+            JobSeeker::create([
                 'user_id' => $user->id,
             ]);
         } else {

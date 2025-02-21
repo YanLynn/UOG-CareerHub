@@ -80,6 +80,61 @@ export const useAuthStore = defineStore('auth', {
                 this.loading = false;
             }
         },
+        async addWorkExp($formData) {
+            try {
+                const res = await apiService.addWorkExp($formData);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async deleteHistory($formData) {
+            try {
+                const res = await apiService.deleteHistory($formData);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async saveEdu($formData) {
+            try {
+                const res = await apiService.saveEdu($formData);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async deleteEdu(eduID) {
+            try {
+                const res = await apiService.deleteEdu(eduID);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+        async jobSeekerJobList(status) {
+            try {
+                const res = await apiService.jobSeekerJobList(status);
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
         async login(credentials) {
             this.loading = true;
             this.authError = null;

@@ -16,21 +16,21 @@ class EducationSeeder extends Seeder
             [
                 'qualification' => 'Bachelor of Science in Computer Science',
                 'institution' => 'University of California, Berkeley',
-                'date' => '2019-06-15',
+                'date' => '2019',
                 'qualification_status' => true,
                 'description' => 'Studied algorithms, data structures, and software engineering.',
             ],
             [
                 'qualification' => 'Master of Business Administration (MBA)',
                 'institution' => 'Harvard Business School',
-                'date' => '2021-05-30',
+                'date' => '2021',
                 'qualification_status' => true,
                 'description' => 'Specialized in marketing and financial management.',
             ],
             [
                 'qualification' => 'Diploma in Graphic Design',
                 'institution' => 'New York School of Design',
-                'date' => '2020-12-10',
+                'date' => '2020',
                 'qualification_status' => true,
                 'description' => 'Focused on branding, UI/UX, and typography.',
             ],
@@ -44,7 +44,7 @@ class EducationSeeder extends Seeder
             [
                 'qualification' => 'High School Diploma',
                 'institution' => 'Springfield High School',
-                'date' => '2016-06-01',
+                'date' => '2016',
                 'qualification_status' => true,
                 'description' => 'Completed secondary education with a focus on science and mathematics.',
             ]

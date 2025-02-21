@@ -11,6 +11,8 @@ import NotFound from '@components/js/views/errors/NotFound.vue'; // Custom 404 p
 import JobSeekerProfile from '@components/js/views/JobSeeker/Profile.vue'
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import ProfileContent from '../views/JobSeeker/ProfileContent.vue';
+import JobApplication from '../views/JobSeeker/JobApplication.vue';
 
 // Define routes
 const routes = [
@@ -33,10 +35,26 @@ const routes = [
         ],
     },
     {
-        path: '/jobSeeker/profile',
+        path: '/',
         component: MainLayout,
         children: [
-            { path: '/jobSeeker/profile', name: 'JobSeekerProfile', component: JobSeekerProfile, meta: { requiresAuth: true, roles: ['JobSeeker'] } },
+            {
+                path: '',
+                name: '',
+                component: JobSeekerProfile,
+                meta: { requiresAuth: true, roles: ['JobSeeker'] },
+                children: [{
+                    path: '/jobSeeker/profile',
+                    name: 'JobSeekerProfile',
+                    component: ProfileContent,
+                },
+                {
+                    path: '/jobSeeker/job-application',
+                    name: 'JobApplication',
+                    component: JobApplication,
+                }
+                ]
+            },
         ],
     },
     // Unauthorized Access Page

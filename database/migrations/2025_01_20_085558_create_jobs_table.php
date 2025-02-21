@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('salary', 10, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('employer_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('employer_id')->references('id')->on('employers')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null');
         });

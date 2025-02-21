@@ -38,6 +38,11 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/updateProfile',[JobSeekerProfileController::class,'updateProfile']);
     Route::post('/updateSkill',[JobSeekerProfileController::class,'updateSkill']);
     Route::post('/uploadResumeFile',[JobSeekerProfileController::class,'uploadResumeFile']);
+    Route::post('/addWorkExp',[JobSeekerProfileController::class,'addWorkExp']);
+    Route::post('/deleteHistory',[JobSeekerProfileController::class,'deleteCareerHistory']);
+    Route::post('/saveEdu',[JobSeekerProfileController::class,'saveEducation']);
+    Route::post('/deleteEducation/{id}',[JobSeekerProfileController::class,'deleteEducation']);
+    Route::get('/jobSeekerJobList/{status}',[JobSeekerProfileController::class,'jobSeekerJobList']);
 });
 
 

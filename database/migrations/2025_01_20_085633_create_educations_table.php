@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
         $table->string('qualification');
         $table->string('institution');
-        $table->date('date')->nullable();
+        $table->year('date')->nullable();
         $table->boolean('qualification_status')->default(false);
         $table->text('description')->nullable();
         $table->timestamps();
