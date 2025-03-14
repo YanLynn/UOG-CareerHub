@@ -197,6 +197,89 @@ async jobSeekerJobList(status) {
     }
 },
 
+async getCompany() {
+    try {
+        const response = await api.get(`/getCompany`);
+
+        if (!response.data) {
+            throw new Error('No Company data found in response.......');
+        }
+        return response.data;
+    } catch (err) {
+        console.error('error:', err.response?.data || err.message);
+        throw err;
+    }
+},
+
+async changeEmail(param) {
+    try {
+        const response = await api.post(`/changeEmail`,param);
+
+        if (!response.data) {
+            throw new Error('No user data found in response.......');
+        }
+        return response.data;
+    } catch (err) {
+        console.error('error:', err.response?.data || err.message);
+        throw err;
+    }
+},
+async changePassword(param) {
+    try {
+        const response = await api.post(`/changePassword`,param);
+
+        if (!response.data) {
+            throw new Error('No user data found in response.......');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('error:', error.response?.data || error.message);
+        throw error;
+    }
+},
+
+async getJobsList(page) {
+    console.log('page',page)
+    try {
+        const response = await api.get(`/getJobsList/page=${page}`,);
+
+        if (!response.data) {
+            throw new Error('No job data found in response.......');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('error:', error.response?.data || error.message);
+        throw error;
+    }
+},
+
+async getCountry() {
+    try {
+        const response = await api.get(`/getCountry`);
+
+        if (!response.data) {
+            throw new Error('No  data found in response.......');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('error:', error.response?.data || error.message);
+        throw error;
+    }
+},
+
+async getCategory() {
+    try {
+        const response = await api.get(`/getCategory`);
+
+        if (!response.data) {
+            throw new Error('No  data found in response.......');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('error:', error.response?.data || error.message);
+        throw error;
+    }
+},
 
 
 

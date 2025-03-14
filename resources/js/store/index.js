@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', {
         token: (state) => state.currentUser?.token || null,
         isAdmin: (state) => state.currentUser?.role === 'Admin',
         isEmployer: (state) => state.currentUser?.role === 'Employer',
-        isJobseeker: (state) => state.currentUser?.role === 'Jobseeker',
+        isJobseeker: (state) => state.currentUser?.role === 'JobSeeker',
     },
 
     actions: {
@@ -245,5 +245,65 @@ export const useAuthStore = defineStore('auth', {
         hideToast() {
             this.isVisible = false;
         },
+
+        async getCompany() {
+            try {
+                const res = await apiService.getCompany();
+                return res;
+            } catch (err) {
+                this.authError = err.response?.data?.message || err.message;
+                throw err;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async changeEmail(param){
+            try {
+                const res = await apiService.changeEmail(param);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async changePassword(param){
+            try {
+                const res = await apiService.changePassword(param);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+
+        async getJobsList({page}){
+            console.log('aaa',page)
+            try {
+                const res = await apiService.getJobsList(page);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async getCountry(){
+            try {
+                const res = await apiService.getCountry();
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async getCategory(){
+            try {
+                const res = await apiService.getCategory();
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        }
     }
 });

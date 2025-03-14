@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center md:h-screen p-6 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="flex items-center justify-center md:h-screen p-6  dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div class="shadow-xl max-w-6xl max-md:max-w-lg rounded-lg p-6 bg-white dark:bg-gray-800">
             <div class="grid md:grid-cols-2 items-center gap-8">
                 <!-- Image Section -->
@@ -121,3 +121,6 @@ const handleLogin = async () => {
     }
 };
 </script>
+
+
+

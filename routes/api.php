@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobSeekerProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
@@ -43,7 +45,15 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/saveEdu',[JobSeekerProfileController::class,'saveEducation']);
     Route::post('/deleteEducation/{id}',[JobSeekerProfileController::class,'deleteEducation']);
     Route::get('/jobSeekerJobList/{status}',[JobSeekerProfileController::class,'jobSeekerJobList']);
+
+
+    Route::post('/changeEmail',[UserController::class,'changeEmail']);
+    Route::post('/changePassword',[UserController::class,'changePassword']);
 });
 
-
+Route::get('/getCompany',[HomeController::class,'getCompany']);
 Route::get('/countries', [SearchController::class, 'searchCountry']);
+
+Route::get('/getJobsList/page={pageNumber}', [JobController::class, 'getJobsList']);
+Route::get('/getCountry', [SearchController::class, 'getCountry']);
+Route::get('/getCategory', [SearchController::class, 'getCategory']);

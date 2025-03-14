@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -13,26 +14,16 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'Admin',
-        ]);
+        $faker = Faker::create();
 
-        User::create([
-            'name' => 'employer',
-            'email' => 'employer1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'Employer',
-        ]);
-
-        User::create([
-            'name' => 'jobseeker',
-            'email' => 'jobseeker1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'JobSeeker',
-        ]);
+        for ($i = 0; $i < 20; $i++) {
+            User::create([
+                'name'     => $faker->name,
+                'email'    => $faker->unique()->safeEmail,
+                'password' => Hash::make('password'),
+                'role'     => $faker->randomElement(['Admin', 'Employer', 'JobSeeker']),
+            ]);
+        }
 
     }
 }

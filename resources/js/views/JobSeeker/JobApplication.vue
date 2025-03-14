@@ -1,9 +1,9 @@
 <template>
-
     <div class="mt-4">
         <Card class="shadow-md hover:shadow-lg transition-shadow duration-200">
             <template #content>
 
+                <!-- Status Buttons -->
                 <div class="flex mb-4 gap-2 justify-end">
                     <Button rounded label="1" class="w-8 h-8 p-0" :outlined="value !== '0'"
                         @click="jobStatusAppend('pending'), value = '0'" />
@@ -11,11 +11,9 @@
                         @click="jobStatusAppend('saved'), value = '1'" />
                     <Button rounded label="2" class="w-8 h-8 p-0" :outlined="value !== '2'"
                         @click="jobStatusAppend('approved'), value = '2'" />
-
-
                 </div>
 
-
+                <!-- Tabs -->
                 <Tabs v-model:value="value">
                     <TabList>
                         <Tab value="0" @click="jobStatusAppend('pending')">Job Applied</Tab>
@@ -24,12 +22,12 @@
                     </TabList>
 
                     <TabPanels class="!border-0">
+                        <TabPanel v-for="tabValue in ['0', '1', '2']" :key="tabValue" :value="tabValue" class="!border-0">
 
-                        <TabPanel value="0" class="!border-0">
-
-                            <Splitter class="h-[600px] !border-0">
+                            <!-- Split Layout -->
+                            <Splitter class="h-[600px] min-h-[600px] !border-0">
+                                <!-- Left Panel: Job List -->
                                 <SplitterPanel :size="40" :minSize="10" class="!border-0">
-
                                     <ScrollPanel style="width: 100%; height: 100%;" class="!border-0">
                                         <div class="grid grid-cols-1 gap-4 p-4">
                                             <JobCard v-for="job in jobs" :key="job.id" :job="job"
@@ -39,91 +37,22 @@
                                     </ScrollPanel>
                                 </SplitterPanel>
 
-                                <SplitterPanel :size="60">
-                                    <div class="p-4 text-gray-700">
-                                        <div v-if="selectedJobId != null">
+                                <!-- Right Panel: Job Details -->
+                                <SplitterPanel :size="60" class="h-full">
+                                    <div class="p-4 h-full flex flex-col">
+                                        <div v-if="selectedJobId !== null" class="h-full overflow-auto">
                                             <JobDetail :job="selectedJob" />
                                         </div>
-                                        <div v-else class="text-center py-8">
-                                            <div
-                                                class="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500">
-
-                                                <h2 class="mt-4 text-xl font-semibold text-gray-700"><i
-                                                        class="pi pi-arrow-left"></i> Select a job</h2>
-                                                <p class="text-sm mt-1">Display details here</p>
-                                            </div>
+                                        <div v-else class="text-center flex flex-col items-center justify-center h-full text-gray-500">
+                                            <h2 class="mt-4 text-xl font-semibold text-gray-700">
+                                                <i class="pi pi-arrow-left"></i> Select a job
+                                            </h2>
+                                            <p class="text-sm mt-1">Display details here</p>
                                         </div>
                                     </div>
                                 </SplitterPanel>
                             </Splitter>
-                        </TabPanel>
 
-
-                        <TabPanel value="1">
-
-                            <Splitter class="h-[600px] !border-0">
-                                <SplitterPanel :size="40" :minSize="10" class="!border-0">
-
-                                    <ScrollPanel style="width: 100%; height: 100%;" class="!border-0">
-                                        <div class="grid grid-cols-1 gap-4 p-4">
-                                            <JobCard v-for="job in jobs" :key="job.id" :job="job"
-                                                @click="openJobDetail(job)" :selectedJobId="selectedJobId"
-                                                @select="handleSelect" />
-                                        </div>
-                                    </ScrollPanel>
-                                </SplitterPanel>
-
-                                <SplitterPanel :size="60">
-                                    <div class="p-4 text-gray-700">
-                                        <div v-if="selectedJobId != null">
-                                            <JobDetail :job="selectedJob" />
-                                        </div>
-                                        <div v-else class="text-center py-8">
-                                            <div
-                                                class="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500">
-
-                                                <h2 class="mt-4 text-xl font-semibold text-gray-700"><i
-                                                        class="pi pi-arrow-left"></i> Select a job</h2>
-                                                <p class="text-sm mt-1">Display details here</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SplitterPanel>
-                            </Splitter>
-                        </TabPanel>
-
-
-                        <TabPanel value="2">
-
-                            <Splitter class="h-[600px] !border-0">
-                                <SplitterPanel :size="40" :minSize="10" class="!border-0">
-
-                                    <ScrollPanel style="width: 100%; height: 100%;" class="!border-0">
-                                        <div class="grid grid-cols-1 gap-4 p-4">
-                                            <JobCard v-for="job in jobs" :key="job.id" :job="job"
-                                                @click="openJobDetail(job)" :selectedJobId="selectedJobId"
-                                                @select="handleSelect" />
-                                        </div>
-                                    </ScrollPanel>
-                                </SplitterPanel>
-
-                                <SplitterPanel :size="60">
-                                    <div class="p-4 text-gray-700">
-                                        <div v-if="selectedJobId != null">
-                                            <JobDetail :job="selectedJob" />
-                                        </div>
-                                        <div v-else class="text-center py-8">
-                                            <div
-                                                class="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500">
-
-                                                <h2 class="mt-4 text-xl font-semibold text-gray-700"><i
-                                                        class="pi pi-arrow-left"></i> Select a job</h2>
-                                                <p class="text-sm mt-1">Display details here</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SplitterPanel>
-                            </Splitter>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
@@ -148,46 +77,46 @@ import JobCard from '../../components/JobCard.vue'
 import JobDetail from '../../components/JobDetail.vue'
 import { useAuthStore } from '@/store'
 import { useToast } from 'primevue/usetoast'
-// Which tab is selected
+
+// Selected tab
 const value = ref('0')
-const jobDetailVisible = ref(false)
 const selectedJob = ref({})
 const selectedJobId = ref(null)
 const authStore = useAuthStore()
 const toast = useToast()
 const jobStatus = ref('pending')
-const jobs = ref()
-
-
+const jobs = ref([])
 
 onMounted(async () => {
     try {
-        const res = await authStore.jobSeekerJobList(jobStatus.value)
-        jobs.value = res.data
-        console.log(res.data)
+        await fetchJobs()
     } catch (error) {
-
+        console.error(error)
     }
 })
 
+async function fetchJobs() {
+    try {
+        const res = await authStore.jobSeekerJobList(jobStatus.value)
+        jobs.value = res.data
+        console.log('')
+    } catch (error) {
+        console.error('Error fetching jobs:', error)
+    }
+}
 
 async function jobStatusAppend(status) {
     selectedJobId.value = null
     jobStatus.value = status
-    const res = await authStore.jobSeekerJobList(jobStatus.value)
-    jobs.value = res.data
+    await fetchJobs()
 }
 
 function openJobDetail(job) {
     selectedJob.value = job
-    jobDetailVisible.value = true
+    selectedJobId.value = job.id
 }
 
 function handleSelect(job) {
     selectedJobId.value = job.id
 }
-
-
-
-
 </script>

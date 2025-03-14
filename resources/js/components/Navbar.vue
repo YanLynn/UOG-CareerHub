@@ -46,8 +46,12 @@
                                         :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block px-4 py-2 text-sm']">
                                         Dashboard</router-link>
                                     </MenuItem>
-                                    <MenuItem v-slot="{ active }" v-if="!isAdmin">
-                                        <router-link :to="{ name: isEmployer ? 'bbRouteName' : 'JobSeekerProfile' }"
+                                    <MenuItem v-slot="{ active }" v-if="!isEmployer">
+                                        <router-link :to="{ name:'JobSeekerProfile' }"
+                                        :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block px-4 py-2 text-sm']">Profile</router-link>
+                                    </MenuItem>
+                                    <MenuItem v-slot="{ active }" v-if="isEmployer">
+                                        <router-link :to="{name:'EmployerProfile'}"
                                         :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700 dark:text-gray-300', 'block px-4 py-2 text-sm']">Profile</router-link>
                                     </MenuItem>
 
@@ -111,15 +115,11 @@ const items = ref([
         command: () => router.push('/'),
     },
     {
-        label: 'Projects',
+        label: 'Job Search',
         icon: 'pi pi-search',
-        badge: 3,
-        items: [
-            { label: 'Core', icon: 'pi pi-bolt' },
-            { label: 'Blocks', icon: 'pi pi-server' },
-            { separator: true },
-            { label: 'UI Kit', icon: 'pi pi-pencil' },
-        ],
+        command: () => router.push('job-search')
+
+
     },
 ]);
 

@@ -1,7 +1,12 @@
 <template>
     <div class="container mx-auto p-6">
+        <div class="dark:border-surface-700 bg-surface-0 dark:bg-surface-900 shadow-sm rounded-lg" v-if="loading">
+            <div class="flex mb-4">
+                <Skeleton width="100%" height="150px"></Skeleton>
+            </div>
+        </div>
         <!-- Profile Header -->
-        <div
+        <div v-else
             class="dark:!bg-gray-800 bg-gradient-to-r from-green-50 to-blue-50 shadow-sm rounded-lg p-6 flex items-center space-x-6 hover:shadow-md relative">
             <!-- Profile Picture -->
             <div class="relative w-24 h-24">
@@ -37,15 +42,12 @@
                         class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-400/10 dark:hover:bg-slate-700/10 rounded-md p-2 transition-colors duration-200">
                         <i class="pi pi-user" style="font-size:13px"></i> Profile
                     </router-link>
-                    <router-link to="/jobSeeker/job-search"
-                        class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-400/10 dark:hover:bg-slate-700/10 rounded-md p-2 transition-colors duration-200">
-                        <i class="pi pi-search" style="font-size:13px"></i> Job Search
-                    </router-link>
+
                     <router-link to="/jobSeeker/job-application"
                         class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-400/10 dark:hover:bg-slate-700/10 rounded-md p-2 transition-colors duration-200">
                         <i class="pi pi-star" style="font-size:13px"></i> Job Application
                     </router-link>
-                    <router-link to="/settings"
+                    <router-link to="/jobSeeker/settings"
                         class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-400/10 dark:hover:bg-slate-700/10 rounded-md p-2 transition-colors duration-200">
                         <i class="pi pi-cog" style="font-size:13px"></i> Settings
                     </router-link>
@@ -93,7 +95,7 @@
                         @click="toggleMobileMenu">
                         <i class="pi pi-star" style="font-size:13px"></i> Job Application
                     </router-link>
-                    <router-link to="/settings"
+                    <router-link to="/jobSeeker/settings"
                         class="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors duration-200"
                         @click="toggleMobileMenu">
                         <i class="pi pi-cog" style="font-size:13px"></i> Settings
@@ -178,12 +180,12 @@ import { required, minLength } from '@vuelidate/validators'
 import { useToast } from 'primevue/usetoast'
 import { useAuthStore } from '@/store'
 import { useRouter } from 'vue-router'
-
+import Skeleton from 'primevue/skeleton';
 /* -------------------- Setup & Refs -------------------- */
 const router = useRouter()
 const toast = useToast()
 const authStore = useAuthStore()
-
+const loading = ref(false)
 
 // Toggle for mobile menu overlay
 const mobileMenuOpen = ref(false)
@@ -191,42 +193,6 @@ function toggleMobileMenu() {
     mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-// Navigate using Vue Router
-function navigate(path) {
-    router.push(path)
-    mobileMenuOpen.value = false // close the mobile menu after navigating
-}
-
-
-// Menubar items
-const jobSeekerMenu = ref([
-    {
-        label: 'Profile',
-        icon: 'pi pi-user',
-        command: () => {
-            router.push('/jobSeeker/profile')
-        }
-    },
-    {
-        label: 'Job Search',
-        icon: 'pi pi-search'
-    },
-    {
-        label: 'Job Apply List',
-        icon: 'pi pi-star',
-        command: () => {
-            router.push('/jobSeeker/job-apply')
-        }
-    },
-    {
-        label: 'Settings',
-        icon: 'pi pi-cog'
-    },
-    {
-        label: 'Profile Viewer',
-        icon: 'pi pi-eye'
-    }
-])
 
 // Profile data
 const profile = ref({
@@ -267,6 +233,8 @@ function getPresentJob(experienceList = []) {
 
 // On mount, fetch the user’s profile
 onMounted(async () => {
+
+    loading.value = true
     try {
         await authStore.getJobSeekerProfile()
         const apiData = authStore.jobSeekerProfile.data
@@ -286,6 +254,8 @@ onMounted(async () => {
 
         // Also set autocomplete display
         selectedCountry.value = profile.value.location
+        loading.value = false
+
     } catch (error) {
         console.error('Failed to fetch profile:', error)
     }
@@ -357,7 +327,13 @@ async function updateProfile() {
 
         // Close the drawer
         visible.value = false
-
+        //update currentUser State
+        authStore.$patch({
+            currentUser: {
+                ...authStore.currentUser,
+                name: profile.value.name,
+            },
+        });
         toast.add({
             severity: 'success',
             summary: 'Profile Updated',

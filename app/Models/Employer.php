@@ -10,10 +10,10 @@ class Employer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'company_name',
-        'company_website',
-        'company_image',
+        'user_id', 'company_name', 'company_website', 'company_image',
+        'industry', 'company_size', 'company_description', 'founded_year',
+        'country_id', 'contact_email', 'contact_phone', 'linkedin_url',
+        'twitter_url', 'facebook_url', 'status', 'verified'
     ];
 
     /**
@@ -25,5 +25,10 @@ class Employer extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

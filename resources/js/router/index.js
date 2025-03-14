@@ -13,7 +13,9 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import ProfileContent from '../views/JobSeeker/ProfileContent.vue';
 import JobApplication from '../views/JobSeeker/JobApplication.vue';
-
+import Settings from '../views/JobSeeker/Settings.vue';
+import JobSearch from '../views/jobSearch/index.vue';
+import EmployerProfile from '@components/js/views/Employer/profile.vue'
 // Define routes
 const routes = [
     {
@@ -23,6 +25,11 @@ const routes = [
             { path: '', name: 'Home', component: Home },
             { path: 'login', name: 'Login', component: Login },
             { path: 'register', name: 'Register', component: Register },
+            {
+                path: '/job-search',
+                name: 'jobSearch',
+                component: JobSearch,
+            },
         ],
     },
     {
@@ -52,10 +59,28 @@ const routes = [
                     path: '/jobSeeker/job-application',
                     name: 'JobApplication',
                     component: JobApplication,
-                }
+                },
+                {
+                    path: '/jobSeeker/settings',
+                    name: 'JobSeekerSettings',
+                    component: Settings,
+                },
+
                 ]
             },
         ],
+    },
+    {
+        path:'/',
+        component: MainLayout,
+        children:[
+            {
+                path: '/employer/profile',
+                name: 'EmployerProfile',
+                component: EmployerProfile,
+                meta: { requiresAuth: true, roles: ['Employer'] },
+            }
+        ]
     },
     // Unauthorized Access Page
     {
