@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/{any}', function () {
     return view('welcome'); // Or the Blade file serving your Vue app
 })->where('any', '.*');
+
+Broadcast::routes(['middleware' => ['auth:api']]);

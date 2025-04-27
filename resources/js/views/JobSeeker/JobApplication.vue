@@ -30,7 +30,22 @@
                                 <SplitterPanel :size="40" :minSize="10" class="!border-0">
                                     <ScrollPanel style="width: 100%; height: 100%;" class="!border-0">
                                         <div class="grid grid-cols-1 gap-4 p-4">
-                                            <JobCard v-for="job in jobs" :key="job.id" :job="job"
+                                            <!-- Show Skeleton while loading -->
+                                            <template v-if="loading">
+                                                <Skeleton v-for="i in 5" :key="i" height="120px" class="rounded-lg" />
+                                            </template>
+
+                                            <!-- Show No Data Found Message -->
+                                            <template v-else-if="jobs.length === 0">
+                                                <div class="text-center text-gray-500 dark:text-gray-400 mt-10">
+                                                    <i class="pi pi-search text-4xl"></i>
+                                                    <p class="mt-2 text-lg font-semibold">No jobs found</p>
+                                                    <p class="text-sm">Try changing filters or check later.</p>
+                                                </div>
+                                            </template>
+
+                                            <!-- Show Job Cards -->
+                                            <JobCard v-else v-for="job in jobs" :key="job.id" :job="job"
                                                 @click="openJobDetail(job)" :selectedJobId="selectedJobId"
                                                 @select="handleSelect" />
                                         </div>
@@ -73,6 +88,7 @@ import TabPanel from 'primevue/tabpanel'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
 import ScrollPanel from 'primevue/scrollpanel'
+import Skeleton from 'primevue/skeleton'
 import JobCard from '../../components/JobCard.vue'
 import JobDetail from '../../components/JobDetail.vue'
 import { useAuthStore } from '@/store'
@@ -86,6 +102,7 @@ const authStore = useAuthStore()
 const toast = useToast()
 const jobStatus = ref('pending')
 const jobs = ref([])
+const loading = ref(false) // ✅ Added Loading State
 
 onMounted(async () => {
     try {
@@ -97,11 +114,13 @@ onMounted(async () => {
 
 async function fetchJobs() {
     try {
+        loading.value = true; // Start loading
         const res = await authStore.jobSeekerJobList(jobStatus.value)
         jobs.value = res.data
-        console.log('')
     } catch (error) {
         console.error('Error fetching jobs:', error)
+    } finally {
+        loading.value = false; // Stop loading after fetch
     }
 }
 

@@ -17,4 +17,14 @@ class JobApply extends Model
         'salary',
 
     ];
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'job_id');
+    }
+
+    public function jobseeker()
+    {
+        return $this->belongsTo(JobSeeker::class, 'jobseeker_id');
+    }
 }

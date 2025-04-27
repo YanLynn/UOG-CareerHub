@@ -27,8 +27,17 @@ class Employer extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'employer_id', 'id');
+    }
+
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function chatRooms()
+    {
+        return $this->hasMany(ChatRoom::class);
     }
 }

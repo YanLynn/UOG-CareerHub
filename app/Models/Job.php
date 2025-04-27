@@ -26,6 +26,11 @@ class Job extends Model
         'visibility'
     ];
 
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'job_id');
+    }
     public function employer()
     {
         return $this->belongsTo(Employer::class);
@@ -44,6 +49,6 @@ class Job extends Model
      */
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_id'); // Foreign key
     }
 }

@@ -117,7 +117,7 @@ const items = ref([
     {
         label: 'Job Search',
         icon: 'pi pi-search',
-        command: () => router.push('job-search')
+        command: () => router.push('/job-search')
 
 
     },

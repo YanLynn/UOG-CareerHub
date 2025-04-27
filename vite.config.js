@@ -32,5 +32,8 @@ export default defineConfig({
         rollupOptions: {
             external: ['path', 'fs', 'url', 'source-map-js']
         }
-    }
+    },
+    define: {
+        'process.env': process.env
+      }
 });

@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
-
+    protected $table = 'countries';
     protected $fillable = [
         'name',
-        'postal_code',
+        'code',
+        'country',
+        'countryCode',
+        'flag'
     ];
 
     /**
@@ -20,8 +23,8 @@ class Country extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function jobseekers()
-    {
-        return $this->hasMany(Jobseeker::class);
-    }
+    // public function jobseekers()
+    // {
+    //     return $this->hasMany(Jobseeker::class);
+    // }
 }

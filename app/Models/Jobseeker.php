@@ -69,4 +69,9 @@ class JobSeeker extends Model
         $careerHistoryIds = array_map('intval', array_filter(explode(',', $this->career_history_id)));
         return CareerHistory::whereIn('id', $careerHistoryIds)->get();
     }
+
+    public function chatRooms()
+    {
+        return $this->hasMany(ChatRoom::class);
+    }
 }

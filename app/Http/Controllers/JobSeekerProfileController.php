@@ -349,6 +349,7 @@ class JobSeekerProfileController extends Controller
 
     public function jobSeekerJobList($status)
     {
+
         try {
             $jobSeeker = JobSeeker::where('user_id', Auth::user()->id)->first();
 
@@ -363,10 +364,13 @@ class JobSeekerProfileController extends Controller
                 ->join('employers', 'jobs.employer_id', '=', 'employers.id')
                 ->join('categories', 'jobs.category_id', '=', 'categories.id')
                 ->leftJoin('countries', 'jobs.country_id', '=', 'countries.id')
-                ->where('job_applies.jobseeker_id', $jobSeeker->user_id)
+                ->where('job_applies.jobseeker_id', $jobSeeker->id)
                 ->when($status, function ($query) use ($status) {
-                    if (in_array($status, ['pending', 'approved', 'saved'])) {
+                    if($status == 'pending' || $status == 'approved'){
                         return $query->where('job_applies.status', $status);
+                    }
+                    elseif ($status == 'saved') {
+                        return $query->where('job_applies.type', $status);
                     }
                 })
                 ->orderBy('job_applies.job_apply_date', 'desc')

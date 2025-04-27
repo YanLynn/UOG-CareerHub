@@ -17,14 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('job_title');
             $table->text('description');
-            $table->unsignedBigInteger('country_id')->nullable();
+            $table->unsignedBigInteger('country_id');
             $table->decimal('salary', 10, 2)->nullable();
             $table->string('job_type')->default('full-time'); // Full-time, Part-time, Contract, etc.
             $table->string('job_location')->nullable(); // Location or 'Remote'
             $table->string('experience_level')->nullable(); // Entry, Mid, Senior
             $table->text('requirements')->nullable(); // Required skills (comma-separated)
             $table->enum('employment_status', ['open', 'closed', 'pending'])->default('open'); // Job status
-            $table->dateTime('application_deadline')->nullable(); // Application closing date
+            $table->date('application_deadline')->nullable(); // Application closing date
             $table->text('benefits')->nullable(); // Benefits offered
             $table->enum('visibility', ['public', 'private', 'featured'])->default('public'); // Job visibility
 
@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->foreign('employer_id')->references('id')->on('employers')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
     }

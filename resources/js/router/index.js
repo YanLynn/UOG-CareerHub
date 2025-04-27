@@ -16,6 +16,13 @@ import JobApplication from '../views/JobSeeker/JobApplication.vue';
 import Settings from '../views/JobSeeker/Settings.vue';
 import JobSearch from '../views/jobSearch/index.vue';
 import EmployerProfile from '@components/js/views/Employer/profile.vue'
+import EmployerProfileContent from '../views/Employer/ProfileContent.vue';
+import ManageJobs from '../views/Employer/ManageJobs.vue';
+import CreateJob from '../views/Employer/CreateJob.vue';
+import EditJob from '../views/Employer/EditJob.vue';
+import ViewJob from '../views/Employer/ViewJob.vue';
+import JobApplicationsList from '../views/Employer/JobApplicationsList.vue';
+import ChatRoom from '../views/chat-room/index.vue'
 // Define routes
 const routes = [
     {
@@ -32,6 +39,7 @@ const routes = [
             },
         ],
     },
+
     {
         path: '/admin',
         component: AdminLayout,
@@ -71,17 +79,63 @@ const routes = [
         ],
     },
     {
-        path:'/',
+        path: '/',
         component: MainLayout,
-        children:[
+        children: [
             {
-                path: '/employer/profile',
-                name: 'EmployerProfile',
+                path: '',
+                name: '',
                 component: EmployerProfile,
                 meta: { requiresAuth: true, roles: ['Employer'] },
+                children: [
+                    {
+                        path: '/employer/profile',
+                        name: 'EmployerProfile',
+                        component: EmployerProfileContent,
+                    },
+                    {
+                        path: '/employer/manage-jobs',
+                        name: 'ManageJobs',
+                        component: ManageJobs,
+                    },
+                    {
+                        path: '/employer/create-job',
+                        name: 'CreateJob',
+                        component: CreateJob,
+                    },
+                    {
+                        path: '/employer/manage-jobs/edit//:id',
+                        name: 'EditJob',
+                        component: EditJob,
+                    },
+                    {
+                        path: '/employer/manage-jobs/view/:id',
+                        name: 'ViewJob',
+                        component: ViewJob,
+                    },
+                    {
+                        path: '/employer/applications-list',
+                        name: 'ApplicationsList',
+                        component: JobApplicationsList,
+                    },
+                ]
             }
         ]
     },
+    {
+        path: '/',
+        component: MainLayout,
+        children: [
+            {
+                path: '/chat-room',
+                name: '',
+                component: ChatRoom,
+                meta: { requiresAuth: true, roles: ['JobSeeker','Employer'] },
+            }
+        ],
+    },
+
+
     // Unauthorized Access Page
     {
         path: '/unauthorized',

@@ -136,18 +136,18 @@
                     <div class="mb-4">
                         <span class="font-medium text-gray-600 dark:text-gray-400">Classifications:</span>
                         <div class="flex flex-wrap gap-4 mt-3">
-                            <a href="#" class="badge-pill-red">
-                                <i class="pi pi-chart-line mr-2"></i> Accounting
-                            </a>
-                            <a href="#" class="badge-pill-blue">
+                            <router-link :to="{ path: '/job-search', query: { category: 'Finance' } }" class="badge-pill-red">
+                                <i class="pi pi-chart-line mr-2"></i> Finance
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { category: 'Education' } }" class="badge-pill-blue">
                                 <i class="pi pi-graduation-cap mr-2"></i> Education
-                            </a>
-                            <a href="#" class="badge-pill-green">
-                                <i class="pi pi-shield mr-2"></i> Defence
-                            </a>
-                            <a href="#" class="badge-pill-purple">
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { category: 'Technology' } }" class="badge-pill-green">
+                                <i class="pi pi-microchip-ai mr-2"></i> Technology
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { category: 'Healthcare' } }" class="badge-pill-purple">
                                 <i class="pi pi-heart mr-2"></i> Healthcare
-                            </a>
+                            </router-link>
                         </div>
                     </div>
 
@@ -155,18 +155,18 @@
                     <div class="mb-4">
                         <span class="font-medium text-gray-600 dark:text-gray-400">Major Countries:</span>
                         <div class="flex flex-wrap gap-4 mt-3">
-                            <a href="#" class="badge-pill-blue">
-                                <i class="pi pi-flag mr-2"></i> USA
-                            </a>
-                            <a href="#" class="badge-pill-red">
-                                <i class="pi pi-flag mr-2"></i> UK
-                            </a>
-                            <a href="#" class="badge-pill-green">
+                            <router-link :to="{ path: '/job-search', query: { country: 'United States' } }" class="badge-pill-blue">
+                                <i class="pi pi-flag mr-2"></i> United States
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { country: 'Myanmar' } }" class="badge-pill-red">
+                                <i class="pi pi-flag mr-2"></i> Myanmar
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { country: 'Canada' } }" class="badge-pill-green">
                                 <i class="pi pi-flag mr-2"></i> Canada
-                            </a>
-                            <a href="#" class="badge-pill-yellow">
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { country: 'Australia' } }" class="badge-pill-yellow">
                                 <i class="pi pi-flag mr-2"></i> Australia
-                            </a>
+                            </router-link>
                         </div>
                     </div>
 
@@ -174,15 +174,18 @@
                     <div>
                         <span class="font-medium text-gray-600 dark:text-gray-400">Other:</span>
                         <div class="flex flex-wrap gap-4 mt-3">
-                            <a href="#" class="badge-pill-purple">
+                            <router-link to="/job-search" class="badge-pill-purple">
                                 <i class="pi pi-briefcase mr-2"></i> All Jobs
-                            </a>
-                            <a href="#" class="badge-pill-pink">
-                                <i class="pi pi-home mr-2"></i> Remote Jobs
-                            </a>
-                            <a href="#" class="badge-pill-blue">
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { jobType: 'part-time' } }" class="badge-pill-pink">
+                                <i class="pi pi-home mr-2"></i> Part-time Jobs
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { jobType: 'internship' } }" class="badge-pill-blue">
                                 <i class="pi pi-user mr-2"></i> Internships
-                            </a>
+                            </router-link>
+                            <router-link :to="{ path: '/job-search', query: { jobType: 'full-time' } }" class="badge-pill-blue">
+                                <i class="pi pi-user mr-2"></i> Full-time Jobs
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -215,6 +218,7 @@ const sectionData = ref(sections[0])
 onMounted(async () => {
     loading.value = true
     try {
+        await authStore.checkJobApplied()
         const res = await authStore.getCompany()
         companies.value = res.data
         loading.value = false

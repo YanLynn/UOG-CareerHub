@@ -13,6 +13,8 @@ export const useAuthStore = defineStore('auth', {
         type: 'success',
         userLists: [],
         jobSeekerProfile:[],
+        checkJobAppliedList:[],
+        EmployerProfile:[]
     }),
 
     getters: {
@@ -277,10 +279,18 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async getJobsList({page}){
-            console.log('aaa',page)
+        async getJobsList(params){
             try {
-                const res = await apiService.getJobsList(page);
+                const res = await apiService.getJobsList(params);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async getJobById(jID){
+            try {
+                const res = await apiService.getJobById(jID);
                 return res;
             } catch (error) {
                 this.authError = error.response?.data?.message || error.message;
@@ -304,6 +314,117 @@ export const useAuthStore = defineStore('auth', {
                 this.authError = error.response?.data?.message || error.message;
                 throw error;
             }
+        },
+        async jobApplyAndSave(params){
+
+            try {
+                const res = await apiService.jobApplyAndSave(params);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async checkJobApplied(){
+            try {
+                const res = await apiService.checkJobApplied();
+                return this.checkJobAppliedList = res.data
+                // return Promise.resolve();
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async getEmployerProfile(){
+            try {
+                const res = await apiService.getEmployerProfile();
+                 this.EmployerProfile = res.data
+                return Promise.resolve();
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+
+        async createJobPost(params){
+            try {
+                const res = await apiService.createJobPost(params);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+
+        async deleteJob(jID){
+            try {
+                const res = await apiService.deleteJob(jID);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+
+        async updateJob(params){
+            try {
+                const res = await apiService.updateJob(params);
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+        async getApplicationsByJob(){
+            try {
+                const res = await apiService.getApplicationsByJob();
+                return res;
+            } catch (error) {
+                this.authError = error.response?.data?.message || error.message;
+                throw error;
+            }
+        },
+
+        async getContacts() {
+            try {
+                return await apiService.getContacts()
+            } catch (error) {
+                console.error("Contacts error:", error.message)
+                throw error
+            }
+        },
+
+        async getMessages(chatRoomId) {
+            try {
+                return await apiService.getMessages(chatRoomId)
+            } catch (error) {
+                console.error("Messages error:", error.message)
+                throw error
+            }
+        },
+
+        async sendMessage(chatRoomId, payload) {
+            try {
+                return await apiService.sendMessage(chatRoomId, payload)
+            } catch (error) {
+                console.error("Send message error:", error.message)
+                throw error
+            }
+        },
+
+        async sendTyping(chatRoomId, typing = true) {
+            try {
+                return await apiService.sendTyping(chatRoomId, typing = true)
+            } catch (error) {
+                console.error("Send message error:", error.message)
+                throw error
+            }
         }
+
+
+
     }
+
+
+
 });

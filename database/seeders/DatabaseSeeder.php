@@ -16,16 +16,18 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             CountrySeeder::class,
-            SkillSeeder::class,
             LanguageSeeder::class,
+            SkillSeeder::class,
+            EducationSeeder::class,
+            CategorySeeder::class,
             EmployerSeeder::class,
             JobSeekerSeeder::class,
             CareerHistorySeeder::class,
-            EducationSeeder::class,
-            CategorySeeder::class,
             JobSeeder::class,
             JobApplySeeder::class,
-
+            ChatRoomSeeder::class,
+            ChatSeeder::class,
+            ChatNotificationSeeder::class,
         ]);
     }
 }

@@ -30,6 +30,7 @@ class JobApplySeeder extends Seeder
                 'jobseeker_id' => $faker->randomElement($jobseekerIds),
                 'job_apply_date' => Carbon::now()->subDays(rand(1, 30)),
                 'status' => $faker->randomElement(['pending', 'approved', 'rejected']),
+                'type' => $faker->randomElement(['saved', 'unsaved']),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

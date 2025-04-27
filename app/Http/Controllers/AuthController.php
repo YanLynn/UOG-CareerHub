@@ -38,7 +38,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid email or password',
-            ], 401);
+            ], 500);
         }
 
         $user = Auth::user();
