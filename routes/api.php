@@ -63,8 +63,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/getJobById/{id}', [EmployerProfileController::class, 'getJobById']);
     Route::post('/updateJob', [EmployerProfileController::class, 'updateJob']);
     Route::get('/getApplicationsByJob', [EmployerProfileController::class, 'getApplicationsByJob']);
+    Route::post('/updateJobApplicationStatus', [EmployerProfileController::class, 'updateJobApplicationStatus']);
 
-    Route::get('/contacts', [ChatController::class, 'getContacts']);
+
+
+    Route::post('/contacts', [ChatController::class, 'chatContacts']);
     Route::get('/messages/{chatRoomId}', [ChatController::class, 'getMessages']);
     Route::post('/messages/{chatRoomId}', [ChatController::class, 'sendMessage']);
 
@@ -79,3 +82,7 @@ Route::get('/getCountry', [SearchController::class, 'getCountry']);
 Route::get('/getCategory', [SearchController::class, 'getCategory']);
 
 Route::get('/checkJobApplied', [JobController::class, 'checkJobApplied']);
+
+
+
+

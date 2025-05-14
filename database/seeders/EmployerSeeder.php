@@ -17,7 +17,7 @@ class EmployerSeeder extends Seeder
     {
         $faker = Faker::create();
         $userIds = User::where('role', 'Employer')->pluck('id')->toArray();
-
+        $countryIds = DB::table('countries')->pluck('id')->toArray();
         foreach ($userIds as $userId) {
             DB::table('employers')->insert([
                 'user_id'          => $userId,
@@ -28,7 +28,7 @@ class EmployerSeeder extends Seeder
                 'company_size'     => $faker->randomElement(['Small', 'Medium', 'Large']),
                 'company_description' => $faker->sentence(10),
                 'founded_year'     => $faker->year(),
-                'country_id'       => $faker->numberBetween(1, 200),
+                'country_id' => $countryIds[array_rand($countryIds)],
                 'contact_email'    => $faker->companyEmail,
                 'contact_phone'    => $faker->phoneNumber,
                 'linkedin_url'     => 'https://linkedin.com/company-' . $userId,

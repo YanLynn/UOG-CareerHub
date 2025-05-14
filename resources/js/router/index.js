@@ -23,6 +23,8 @@ import EditJob from '../views/Employer/EditJob.vue';
 import ViewJob from '../views/Employer/ViewJob.vue';
 import JobApplicationsList from '../views/Employer/JobApplicationsList.vue';
 import ChatRoom from '../views/chat-room/index.vue'
+import EmployerSettings from '../views/Employer/Settings.vue';
+import ViewDetail from '../views/admin/user/ViewDetail.vue';
 // Define routes
 const routes = [
     {
@@ -46,7 +48,16 @@ const routes = [
         meta: { requiresAuth: true, roles: ['Admin'] },
         children: [
             { path: 'dashboard', name: 'Dashboard', component: Dashboard },
-            { path: 'user', name: 'User', component: User, meta: { requiresAuth: true, roles: ['Admin'] } },
+            { path: 'user',
+                name: 'User',
+                component: User,
+                meta: { requiresAuth: true, roles: ['Admin'] }
+             },
+             { path: 'viewDetail',
+                name: 'ViewDetail',
+                component: ViewDetail,
+                meta: { requiresAuth: true, roles: ['Admin'] }
+             },
         ],
     },
     {
@@ -73,6 +84,7 @@ const routes = [
                     name: 'JobSeekerSettings',
                     component: Settings,
                 },
+
 
                 ]
             },
@@ -117,6 +129,11 @@ const routes = [
                         path: '/employer/applications-list',
                         name: 'ApplicationsList',
                         component: JobApplicationsList,
+                    },
+                    {
+                        path: '/employer/settings',
+                        name: 'EmployerSettings',
+                        component: EmployerSettings,
                     },
                 ]
             }

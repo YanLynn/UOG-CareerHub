@@ -101,7 +101,7 @@
                                 :class="{
                                     'bg-gray-200 !text-yellow-500 shadow-lg scale-110 hover:bg-gray-300 hover:!text-yellow-600': job.isSaved,
                                     'bg-gray-200 text-gray-500 hover:bg-gray-300 hover:scale-105': !job.isSaved
-                                }" @click.stop="toggleSaveJob(job.id, 'saved')" />
+                                }" @click.stop="toggleSaveJob(job.id, 'saved')"  v-if="!authStore.isEmployer && isAuthenticated "/>
                             <!-- 🔹 Job Card Header -->
                             <div class="flex items-center space-x-4">
                                 <!-- Company Logo -->
@@ -273,12 +273,12 @@
 
                 <!-- 🔹 Apply Button -->
                 <div class="mt-4">
-                    <Button v-if="isAuthenticated" :label="isJobApplied ? 'Already Applied' : 'Apply Now'"
+                    <Button v-if="isAuthenticated && !authStore.isEmployer" :label="isJobApplied ? 'Already Applied' : 'Apply Now'"
                         :disabled="isJobApplied" class="w-full py-3 text-lg rounded-lg shadow-md transition-all"
                         :class="isJobApplied ? 'p-button-secondary cursor-not-allowed opacity-70' : 'p-button-success hover:scale-105'"
                         icon="pi pi-send" @click="!isJobApplied && applyForJob(selectedJob.id, 'pending')" />
 
-                    <Button v-else label="Login to Apply"
+                    <Button v-else-if="!isAuthenticated && !authStore.isEmployer" label="Login to Apply"
                         class="p-button-warning w-full py-3 text-lg rounded-lg shadow-md transition-all hover:scale-105"
                         icon="pi pi-user" @click="redirectToLogin" />
                 </div>

@@ -123,8 +123,7 @@ const menuLinks = ref([
     { label: "Dashboard", icon: "pi pi-home", path: "/employer/profile" },
     { label: "Manage Jobs", icon: "pi pi-briefcase", path: "/employer/manage-jobs" },
     { label: "Applications", icon: "pi pi-users", path: "/employer/applications-list" },
-    { label: "Analytics", icon: "pi pi-chart-bar", path: "/analytics" },
-    { label: "Settings", icon: "pi pi-cog", path: "/settings" }
+    { label: "Settings", icon: "pi pi-cog", path: "/employer/settings" }
 ]);
 
 // Fetch Employer Profile on Component Mount

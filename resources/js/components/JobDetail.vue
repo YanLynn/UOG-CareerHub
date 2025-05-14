@@ -1,15 +1,25 @@
 <template>
-    <Card class="max-w-4xl mx-auto shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
+    <Card
+        class="max-w-4xl mx-auto shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
         <template #header>
             <!-- Header: Job Title & Company Info -->
-            <div class="flex items-center space-x-6 border-b pb-4 px-6 pt-6">
-                <img v-if="job.company_image" :src="job.company_image" alt="Company Logo"
-                    class="w-20 h-20 object-cover rounded-lg shadow-md">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ job.job_title }}</h1>
-                    <p class="text-lg text-gray-600 dark:text-gray-300">{{ job.company_name }}</p>
+            <div class="flex items-start justify-between border-b pb-4 px-6 pt-6">
+                <!-- Left: Company Info -->
+                <div class="flex items-center space-x-6">
+                    <img v-if="job.company_image" :src="job.company_image" alt="Company Logo"
+                        class="w-20 h-20 object-cover rounded-lg shadow-md">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ job.job_title }}</h1>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">{{ job.company_name }}</p>
+                    </div>
+                </div>
+
+                <!-- Right: Chat Icon -->
+                <div class="ml-auto">
+                    <Button icon="pi pi-comments" class="p-button-rounded p-button-outlined" @click="goToChatRoom" />
                 </div>
             </div>
+
         </template>
 
         <template #content>
@@ -25,7 +35,8 @@
                 </div>
                 <div class="flex items-center text-gray-700 dark:text-gray-300">
                     <i class="pi pi-money-bill mr-2 text-green-500"></i>
-                    <span><strong>Salary:</strong> {{ job.salary ? `$${job.salary.toLocaleString()}` : 'Not specified' }}</span>
+                    <span><strong>Salary:</strong> {{ job.salary ? `$${job.salary.toLocaleString()}` : 'Not specified'
+                        }}</span>
                 </div>
                 <div class="flex items-center text-gray-700 dark:text-gray-300">
                     <i class="pi pi-briefcase mr-2 text-purple-500"></i>
@@ -70,6 +81,7 @@
                     </li>
                 </ul>
             </div>
+
         </template>
 
         <template #footer>
@@ -87,13 +99,30 @@ import Card from 'primevue/card';
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
+import { useRouter } from 'vue-router'
 
-defineProps({
-    job: {
-        type: Object,
-        required: true,
-    },
+const router = useRouter()
+// defineProps({
+//     job: {
+//         type: Object,
+//         required: true,
+//     },
+// });
+
+const props = defineProps({
+  job: {
+    type: Object,
+    required: true
+  }
 });
+
+
+
+const goToChatRoom = () => {
+    console.log('job', props.job);
+    // Navigate to chat room or pass params
+    router.push({ path: '/chat-room', query: { employerID: props.job.id } });
+}
 </script>
 
 <style scoped>

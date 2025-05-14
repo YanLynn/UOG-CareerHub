@@ -21,16 +21,21 @@
                             <span class="text-sm text-gray-600 line-clamp-2">
                                 {{ slotProps.data.jobseeker.personal_summary }}
                             </span>
+                            <span class="text-sm text-gray-600 line-clamp-2">
+                                <i class="pi pi-envelope text-blue-500" />
+                                {{ slotProps.data.jobseeker.user.email }}
+                            </span>
                         </div>
                     </div>
                 </template>
             </Column>
 
-            <Column field="email" header="Email">
+
+            <Column field="job_title" header="Job Title">
                 <template #body="slotProps">
                     <div class="flex items-center gap-2">
-                        <i class="pi pi-envelope text-blue-500" />
-                        <span class="text-gray-700">{{ slotProps.data.jobseeker.user.email }}</span>
+                        <span class="text-blue-700 underline hover:cursor-pointer"
+                            @click="viewJob(slotProps.data.job.id)">{{ slotProps.data.job.job_title }}</span>
                     </div>
                 </template>
             </Column>
@@ -52,51 +57,52 @@
             </Column>
 
             <Column header="Actions">
-    <template #body="slotProps">
-        <div class="flex flex-col items-start gap-2">
-            <!-- Top action buttons with icons and tooltips -->
-            <div class="flex gap-2">
-                <Button
+                <template #body="slotProps">
+                    <div class="flex flex-col items-start gap-2">
+                        <!-- Top action buttons with icons and tooltips -->
+                        <div class="flex gap-2">
+                            <!-- <Button
                     icon="pi pi-eye"
                     size="small"
                     rounded
                     severity="info"
                     v-tooltip.top="'View Details'"
                     @click="viewApplication(slotProps.data)"
-                />
-                <Button
-                    icon="pi pi-check-circle"
-                    size="small"
-                    rounded
-                    severity="success"
-                    v-tooltip.top="'Approve Application'"
-                    @click="approveApplication(slotProps.data)"
-                />
-                <Button
-                    icon="pi pi-times-circle"
-                    size="small"
-                    rounded
-                    severity="danger"
-                    v-tooltip.top="'Reject Application'"
-                    @click="rejectApplication(slotProps.data)"
-                />
-            </div>
+                /> -->
+                            <Button icon="pi pi-check-circle" size="small" severity="success"
+                                v-tooltip.top="'Approve Application'"
+                                @click="showActionDialog('approve', slotProps.data)" />
+                            <Button icon="pi pi-times-circle" size="small" severity="danger"
+                                v-tooltip.top="'Reject Application'"
+                                @click="showActionDialog('reject', slotProps.data)" />
+                            <Button v-if="slotProps.data.status == 'approved'" icon="pi pi-comments" size="small"
+                                v-tooltip.top="'Message'" outlined class="text-sm w-full justify-start"
+                                @click="messageJobseeker(slotProps.data)" />
+                        </div>
 
-            <!-- Message Button -->
-            <Button
-                icon="pi pi-comments"
-                label="Message"
-                size="small"
-                outlined
-                class="text-sm w-full justify-start"
-                @click="messageJobseeker(slotProps.data)"
-            />
-        </div>
-    </template>
-</Column>
+                        <!-- Message Button -->
+
+                    </div>
+                </template>
+            </Column>
 
         </DataTable>
     </div>
+    <template>
+        <Dialog v-model:visible="visible" :header="dialogHeader" modal :style="{ width: '30vw' }">
+            <div class="p-text-secondary mb-3">
+                <p><strong>{{ dialogMessage }}</strong></p>
+                <ul class="list-disc ml-5 mt-2">
+                    <li v-for="item in dialogDetails" :key="item">{{ item }}</li>
+                </ul>
+            </div>
+
+            <template #footer>
+                <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="visible = false" />
+                <Button :label="confirmLabel" :icon="confirmIcon" @click="handleConfirm" autofocus />
+            </template>
+        </Dialog>
+    </template>
 </template>
 
 <script setup>
@@ -108,10 +114,87 @@ import Column from 'primevue/column';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
+import Dialog from 'primevue/dialog';
+import { useToast } from 'primevue/usetoast'
+const toast = useToast()
 
 const router = useRouter();
 const authStore = useAuthStore();
 const applications = ref([]);
+const visible = ref(false);
+const actionType = ref('approve');
+const selectedApplicant = ref(null);
+
+const dialogHeader = ref('');
+const dialogMessage = ref('');
+const dialogDetails = ref([]);
+const confirmLabel = ref('');
+const confirmIcon = ref('');
+
+onMounted(async () => {
+    loadData()
+});
+
+
+const showActionDialog = (type, applicant) => {
+    actionType.value = type;
+    selectedApplicant.value = applicant;
+    visible.value = true;
+
+    if (type === 'approve') {
+        dialogHeader.value = 'Approve Applicant';
+        dialogMessage.value = 'Are you sure you want to approve this applicant?';
+        dialogDetails.value = [
+            'An approval email will be sent automatically.',
+            'You’ll be able to message the applicant directly within the system.'
+        ];
+        confirmLabel.value = 'Confirm';
+        confirmIcon.value = 'pi pi-check';
+    } else if (type === 'reject') {
+        dialogHeader.value = 'Reject Applicant';
+        dialogMessage.value = 'Are you sure you want to reject this applicant?';
+        dialogDetails.value = null;
+        // dialogDetails.value = [
+        //     'No email will be sent to the applicant.',
+        //     'The applicant will remain visible in your list.'
+        // ];
+        confirmLabel.value = 'Reject';
+        confirmIcon.value = 'pi pi-times-circle';
+    }
+};
+
+const handleConfirm = async () => {
+    visible.value = false;
+    if (actionType.value === 'approve') {
+        const res = await authStore.updateJobApplicationStatus({
+            job_id: selectedApplicant.value.job.id,
+            jobseeker_id: selectedApplicant.value.jobseeker.id,
+            status: 'approved',
+            application: selectedApplicant.value
+        })
+        toast.add({
+            severity: 'success',
+            summary: 'Status Update!',
+            detail: res.message,
+            life: 3000
+        })
+    } else if (actionType.value === 'reject') {
+        const res = await authStore.updateJobApplicationStatus({
+            job_id: selectedApplicant.value.job.id,
+            jobseeker_id: selectedApplicant.value.jobseeker.id,
+            status: 'rejected'
+        })
+        toast.add({
+            severity: 'success',
+            summary: 'Status Update!',
+            detail: res.message,
+            life: 3000
+        })
+    }
+    loadData()
+};
+
+
 
 const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString();
 
@@ -129,10 +212,7 @@ const viewApplication = (applicant) => {
     console.log('View:', applicant);
 };
 
-const approveApplication = (applicant) => {
-    console.log('Approved:', applicant);
-    // Call backend to set status to "approved"
-};
+
 
 const rejectApplication = (applicant) => {
     console.log('Rejected:', applicant);
@@ -140,19 +220,28 @@ const rejectApplication = (applicant) => {
 };
 
 const messageJobseeker = (applicant) => {
-    console.log('Message:', applicant);
-    router.push('/chat-room');
+   // router.push('/chat-room');
+    router.push({ path: '/chat-room', query:  applicant  });
     // Open chat modal / redirect to messaging component
 };
 
-onMounted(async () => {
+
+
+const loadData = async () => {
     try {
         const res = await authStore.getApplicationsByJob();
         applications.value = res.data;
     } catch (err) {
         console.error('Failed to fetch applications:', err);
     }
-});
+}
+
+
+const viewJob = (jobId) => {
+    router.push(`/employer/manage-jobs/view/${jobId}`);
+};
+
+
 </script>
 
 <style scoped>

@@ -385,9 +385,9 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async getContacts() {
+        async getContacts(param) {
             try {
-                return await apiService.getContacts()
+                return await apiService.getContacts(param)
             } catch (error) {
                 console.error("Contacts error:", error.message)
                 throw error
@@ -419,7 +419,15 @@ export const useAuthStore = defineStore('auth', {
                 console.error("Send message error:", error.message)
                 throw error
             }
-        }
+        },
+        async updateJobApplicationStatus(param) {
+            try {
+                return await apiService.updateJobApplicationStatus(param)
+            } catch (error) {
+                console.error("Send message error:", error.message)
+                throw error
+            }
+        },
 
 
 

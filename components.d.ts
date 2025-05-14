@@ -7,16 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Avatar: typeof import('primevue/avatar')['default']
-    Button: typeof import('primevue/button')['default']
     Card: typeof import('primevue/card')['default']
     Chip: typeof import('primevue/chip')['default']
-    Column: typeof import('primevue/column')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
-    DataTable: typeof import('primevue/datatable')['default']
-    Drawer: typeof import('primevue/drawer')['default']
-    IconField: typeof import('primevue/iconfield')['default']
-    InputIcon: typeof import('primevue/inputicon')['default']
     InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -25,6 +18,7 @@ declare module 'vue' {
     Toast: typeof import('primevue/toast')['default']
   }
   export interface ComponentCustomProperties {
+    Ripple: typeof import('primevue/ripple')['default']
     Tooltip: typeof import('primevue/tooltip')['default']
   }
 }

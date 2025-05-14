@@ -1,80 +1,136 @@
 <template>
-    <div class="p-6">
-        <header class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-semibold">Dashboard Overview</h1>
-        </header>
+    <div class="p-6 space-y-6">
+        <!-- Admin Dashboard Header -->
+        <h2 class="text-2xl font-bold text-gray-800">🚀 CareerHub Admin Dashboard</h2>
 
-        <!-- Dashboard Widgets -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg">
-                <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300">
-                    Total Users
-                </h2>
-                <p class="mt-2 text-3xl font-bold text-blue-600">1,234</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg">
-                <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300">
-                    Active Sessions
-                </h2>
-                <p class="mt-2 text-3xl font-bold text-green-500">567</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg">
-                <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300">
-                    Revenue
-                </h2>
-                <p class="mt-2 text-3xl font-bold text-yellow-500">$12,345</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg">
-                <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300">
-                    Issues
-                </h2>
-                <p class="mt-2 text-3xl font-bold text-red-500">12</p>
-            </div>
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card><template #title>👥 Jobseekers</template><template #content>
+                    <h3 class="text-3xl">{{ metrics.jobseekers }}</h3>
+                </template></Card>
+            <Card><template #title>🏢 Employers</template><template #content>
+                    <h3 class="text-3xl">{{ metrics.employers }}</h3>
+                </template></Card>
+            <Card><template #title>📄 Jobs Posted</template><template #content>
+                    <h3 class="text-3xl">{{ metrics.jobs }}</h3>
+                </template></Card>
         </div>
 
-        <!-- Recent Activity -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h2 class="text-lg font-medium text-gray-700 dark:text-gray-300">
-                Recent Activity
-            </h2>
-            <ul class="mt-4">
-                <li class="border-b border-gray-300 dark:border-gray-700 py-2 flex justify-between">
-                    <span>User John Doe logged in</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">5 mins ago</span>
-                </li>
-                <li class="border-b border-gray-300 dark:border-gray-700 py-2 flex justify-between">
-                    <span>New user registered: Jane Smith</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">15 mins ago</span>
-                </li>
-                <li class="py-2 flex justify-between">
-                    <span>System maintenance completed</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">30 mins ago</span>
-                </li>
-            </ul>
+        <!-- Platform Activity Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+                <template #title>📈 Job Post Growth (Last 5 Months)</template>
+                <template #content>
+                    <Chart type="line" :data="jobPostChartData" :options="chartOptions" style="max-height: 250px" />
+                </template>
+            </Card>
+
+            <!-- Creative Chart Idea: Application Conversion Rate -->
+            <Card>
+                <template #title>📊 Application Conversion Rate</template>
+                <template #content>
+                    <Chart type="doughnut" :data="conversionChartData" style="max-height: 250px" />
+                    <p class="mt-2 text-sm text-gray-500">Shows ratio of approved vs rejected applications.</p>
+                </template>
+            </Card>
         </div>
+
+        <!-- Top Employers Table -->
+        <Card>
+            <template #title>🏆 Top 5 Employers</template>
+            <template #content>
+                <DataTable :value="topEmployers">
+                    <Column field="name" header="Name" />
+                    <Column field="jobs" header="Jobs Posted" />
+                </DataTable>
+            </template>
+        </Card>
+
+        <!-- Moderation Panel -->
+        <Card>
+            <template #title>🚨 Reported Job Posts</template>
+            <template #content>
+                <ul class="list-disc ml-5">
+                    <li v-for="report in reportedJobs" :key="report.id">
+                        {{ report.title }} ({{ report.flags }} flags)
+                        <Button label="Review" icon="pi pi-eye" class="ml-2" size="small" />
+                    </li>
+                </ul>
+            </template>
+        </Card>
     </div>
 </template>
 
 <script setup>
-/* Add any JavaScript logic for dynamic content if needed */
+import { ref } from 'vue';
+import Card from 'primevue/card';
+import Chart from 'primevue/chart';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
+
+const metrics = ref({
+    jobseekers: 1580,
+    employers: 420,
+    jobs: 930
+});
+
+const jobPostChartData = ref({
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [
+        {
+            label: 'Jobs Posted',
+            data: [20, 45, 70, 50, 80],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            fill: true,
+            tension: 0.4
+        }
+    ]
+});
+
+const chartOptions = ref({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: false
+        }
+    },
+    scales: {
+        y: {
+            beginAtZero: true
+        }
+    }
+});
+
+const conversionChartData = ref({
+    labels: ['Approved', 'Rejected'],
+    datasets: [
+        {
+            data: [320, 180],
+            backgroundColor: ['#22c55e', '#ef4444'],
+            hoverOffset: 4
+        }
+    ]
+});
+
+const topEmployers = ref([
+    { name: 'GlobalTech Ltd.', jobs: 45 },
+    { name: 'DreamHire', jobs: 38 },
+    { name: 'EduBridge Co.', jobs: 33 },
+    { name: 'HealthLine', jobs: 27 },
+    { name: 'InnoWorks', jobs: 22 }
+]);
+
+const reportedJobs = ref([
+    { id: 1, title: 'Fake Remote Data Entry Job', flags: 4 },
+    { id: 2, title: 'Unpaid Internship Scam', flags: 3 }
+]);
 </script>
 
-<style>
-/* Optional: Customize scrollbar for smooth experience */
-body {
-    scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #a0aec0;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #718096;
+<style scoped>
+h2 {
+    margin-bottom: 1rem;
 }
 </style>

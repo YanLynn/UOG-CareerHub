@@ -386,9 +386,9 @@ const apiService = {
             throw error;
         }
     },
-    async getContacts() {
+    async getContacts(param) {
         try {
-            const response = await api.get('/contacts')
+            const response = await api.post(`/contacts`,param)
             return response.data
         } catch (error) {
             console.error("Error:", error.response?.data || error.message)
@@ -424,9 +424,17 @@ const apiService = {
             console.error("Error:", error.response?.data || error.message)
             throw error
         }
-    }
+    },
 
-
+    async updateJobApplicationStatus(param) {
+        try {
+            const response = await api.post('/updateJobApplicationStatus',param )
+            return response.data
+        } catch (error) {
+            console.error("Error:", error.response?.data || error.message)
+            throw error
+        }
+    },
 
 
 };

@@ -17,6 +17,66 @@ class CategorySeeder extends Seeder
 
         DB::table('categories')->insert([
             [
+                'name' => 'Software Engineering',
+                'description' => 'Jobs in software development, system architecture, and software lifecycle management.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Data Science',
+                'description' => 'Jobs in data modeling, big data processing, and data-driven decision making.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Artificial Intelligence',
+                'description' => 'Jobs related to AI development, machine learning, and automation.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'DevOps',
+                'description' => 'Jobs focused on continuous integration, automation, and infrastructure as code.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'IT Support',
+                'description' => 'Jobs in technical support, troubleshooting, and end-user system assistance.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Information Security',
+                'description' => 'Jobs in cybersecurity, ethical hacking, and protecting digital assets.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Cloud Services',
+                'description' => 'Jobs working with cloud platforms like AWS, Azure, and Google Cloud.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Mobile Development',
+                'description' => 'Jobs in iOS, Android, and cross-platform mobile app development.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'QA & Testing',
+                'description' => 'Jobs in software quality assurance, test automation, and debugging.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'Game Development',
+                'description' => 'Jobs in building, designing, and testing video games and interactive experiences.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
                 'name' => 'Technology',
                 'description' => 'Jobs related to software development, IT, and tech innovations.',
                 'created_at' => $now,

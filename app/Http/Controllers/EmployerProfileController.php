@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JobApplicationApproved;
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\JobApply;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 class EmployerProfileController extends Controller
 {
     public function getEmployerProfile()
@@ -25,18 +26,18 @@ class EmployerProfileController extends Controller
 
             // Fetch employer details
             $employer = Employer::select('*')
-            ->where('user_id', Auth::id())
-            ->with([
-                'jobs' => function ($query) {
-                    $query->orderBy('created_at', 'desc')
-                          ->with([
-                              'category:id,name',
-                              'country:*'  // Load country per job
-                          ]);
-                },
-                'country:*'
-            ])
-            ->first();
+                ->where('user_id', Auth::id())
+                ->with([
+                    'jobs' => function ($query) {
+                        $query->orderBy('created_at', 'desc')
+                            ->with([
+                                'category:id,name',
+                                'country:*'  // Load country per job
+                            ]);
+                    },
+                    'country:*'
+                ])
+                ->first();
             // If no employer found, return error response
             if (!$employer) {
                 return response()->json([
@@ -150,7 +151,8 @@ class EmployerProfileController extends Controller
         }
     }
 
-    public function deleteJob(Request $jID){
+    public function deleteJob(Request $jID)
+    {
         try {
             return $jID;
         } catch (\Throwable $th) {
@@ -162,7 +164,8 @@ class EmployerProfileController extends Controller
         }
     }
 
-    public function getJobById($jID){
+    public function getJobById($jID)
+    {
 
         try {
             $employer = Employer::where('user_id', Auth::id())->first();
@@ -173,8 +176,8 @@ class EmployerProfileController extends Controller
                 ], 404);
             }
             $job = Job::where('id', $jID)
-            ->where('employer_id', $employer->id)
-            ->firstOrFail();
+                ->where('employer_id', $employer->id)
+                ->firstOrFail();
 
             return response()->json([
                 'success' => true,
@@ -222,8 +225,8 @@ class EmployerProfileController extends Controller
 
             // Find job owned by this employer
             $job = Job::where('id', $validatedData['id'])
-                      ->where('employer_id', $employer->id)
-                      ->firstOrFail();
+                ->where('employer_id', $employer->id)
+                ->firstOrFail();
 
             // Remove jId from the validated data before updating
             unset($validatedData['id']);
@@ -235,7 +238,6 @@ class EmployerProfileController extends Controller
                 'message' => 'Job post updated successfully.',
                 'data' => $job
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $ve) {
             return response()->json([
                 'success' => false,
@@ -251,7 +253,8 @@ class EmployerProfileController extends Controller
         }
     }
 
-    public function getApplicationsByJob(){
+    public function getApplicationsByJob()
+    {
         try {
             // 1. Get the current employer
             $employer = Employer::where('user_id', Auth::id())->first();
@@ -266,16 +269,15 @@ class EmployerProfileController extends Controller
             $applications = JobApply::whereHas('job', function ($query) use ($employer) {
                 $query->where('employer_id', $employer->id);
             })
-            ->with(['job', 'jobseeker.user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+                ->with(['job', 'jobseeker.user'])
+                ->orderBy('created_at', 'desc')
+                ->get();
 
 
             return response()->json([
                 'success' => true,
                 'data' => $applications
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -283,6 +285,36 @@ class EmployerProfileController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
+    }
 
-}
+    public function updateJobApplicationStatus(Request $request)
+    {
+
+
+        $request->validate([
+            'job_id' => 'required|integer',
+            'jobseeker_id' => 'required|integer',
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $application = JobApply::where('job_id', $request->job_id)
+            ->where('jobseeker_id', $request->jobseeker_id)
+            ->first();
+
+        if (!$application) {
+            return response()->json(['message' => 'Application not found.'], 404);
+        }
+
+        $application->status = $request->status;
+        $application->save();
+        if ($request->status === 'approved') {
+            $jobseekerEmail = $request->application['jobseeker']['user']['email'];
+            Mail::to('ny.yanlynn@gmail.com')->send(new JobApplicationApproved($application));
+        }
+
+        return response()->json([
+            'message' => "Application marked as {$request->status}.",
+            'data' => $application
+        ]);
+    }
 }

@@ -211,7 +211,7 @@ class JobController extends Controller
                 $jobApply->job_id = $jobID;
                 $jobApply->jobseeker_id = $getJobSeekerID;
                 $jobApply->status = $status; // 'pending', 'approved', etc.
-                $jobApply->type = null; // Default type
+                $jobApply->type = 'unsaved'; // Default type
                 $jobApply->job_apply_date = Carbon::now(); // Only for applications
                 $jobApply->save();
 
